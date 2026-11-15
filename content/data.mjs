@@ -157,13 +157,13 @@ export const workbooks = [
 ];
 
 export const freebies = [
-  { slug: 'spiral-stopper', title: 'The Spiral Stopper', kind: 'Card', topic: 'overthinking', desc: 'One page. Five questions. Keep it by the bed for 2am.', file: '' },
-  { slug: 'brain-dump-3am', title: 'The 3am Brain Dump Sheet', kind: 'Printable', topic: 'overthinking', desc: 'Get the loop out of your head and onto paper so your brain stops rehearsing it.', file: '' },
-  { slug: 'weekly-knot-planner', title: 'The Weekly Knot Planner', kind: 'Planner', topic: 'healing', desc: 'One week, one knot, three small moves. The whole planner is one page on purpose.', file: '' },
-  { slug: 'needs-checklist', title: 'The Needs Checklist', kind: 'Checklist', topic: 'attachment', desc: 'Name what you actually need before the conversation, so you ask instead of test.', file: '' },
-  { slug: 'do-i-text-them', title: 'The "Do I Text Them" Flowchart', kind: 'Flowchart', topic: 'breakups', desc: 'Nine questions, one honest answer. Screenshot it.', file: '' },
-  { slug: 'task-starter-cards', title: 'ADHD Task Starter Cards', kind: 'Cards', topic: 'adhd', desc: 'Twelve cards that shrink a task until starting it stops being a wall.', file: '' },
-  { slug: 'feelings-weather-kids', title: 'Feelings Weather Chart (Kids)', kind: 'Kids printable', topic: 'healing', desc: 'For ages 4–8: name the feeling as weather, because weather passes.', file: '' },
+  { slug: 'spiral-stopper', title: 'The Spiral Stopper', kind: 'Card', topic: 'overthinking', desc: 'One page. Five questions. Keep it by the bed for 2am.', file: '/assets/printables/spiral-stopper.pdf' },
+  { slug: 'brain-dump-3am', title: 'The 3am Brain Dump Sheet', kind: 'Printable', topic: 'overthinking', desc: 'Get the loop out of your head and onto paper so your brain stops rehearsing it.', file: '/assets/printables/brain-dump-3am.pdf' },
+  { slug: 'weekly-knot-planner', title: 'The Weekly Knot Planner', kind: 'Planner', topic: 'healing', desc: 'One week, one knot, three small moves. The whole planner is one page on purpose.', file: '/assets/printables/weekly-knot-planner.pdf' },
+  { slug: 'needs-checklist', title: 'The Needs Checklist', kind: 'Checklist', topic: 'attachment', desc: 'Name what you actually need before the conversation, so you ask instead of test.', file: '/assets/printables/needs-checklist.pdf' },
+  { slug: 'do-i-text-them', title: 'The "Do I Text Them" Flowchart', kind: 'Flowchart', topic: 'breakups', desc: 'Nine questions, one honest answer. Screenshot it.', file: '/assets/printables/do-i-text-them.pdf' },
+  { slug: 'task-starter-cards', title: 'ADHD Task Starter Cards', kind: 'Cards', topic: 'adhd', desc: 'Twelve cards that shrink a task until starting it stops being a wall.', file: '/assets/printables/task-starter-cards.pdf' },
+  { slug: 'feelings-weather-kids', title: 'Feelings Weather Chart (Kids)', kind: 'Kids printable', topic: 'healing', desc: 'For ages 4–8: name the feeling as weather, because weather passes.', file: '/assets/printables/feelings-weather-kids.pdf' },
 ];
 
 export const games = [

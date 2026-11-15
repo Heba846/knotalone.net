@@ -58,8 +58,9 @@ Every page ships JSON-LD: `Organization`, `WebSite` + `SearchAction`, plus `Arti
 
 ## Going live
 
-See [`docs/LAUNCH.md`](docs/LAUNCH.md) — DNS, GitHub Pages, Search Console, Bing, and the first
-30 days of SEO/AEO work in order.
+- [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — the 14-day launch checklist, one block a day.
+- [`docs/LAUNCH.md`](docs/LAUNCH.md) — DNS, GitHub Pages, Search Console, Bing, keyword map,
+  and the AEO reasoning behind how the pages are written.
 
 ## House rules for content
 

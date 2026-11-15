@@ -31,10 +31,17 @@ const routes = new Set(
     return r;
   })
 );
-// also allow direct file assets
-for (const f of walk(DIST)) routes.add('/' + path.relative(DIST, f).replace(/\\/g, '/'));
-const assetDir = path.join(DIST, 'assets');
-if (fs.existsSync(assetDir)) for (const a of fs.readdirSync(assetDir)) routes.add('/assets/' + a);
+// every real file in dist is a valid target (assets, PDFs, feeds, …)
+function walkAll(dir) {
+  const out = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...walkAll(p));
+    else out.push(p);
+  }
+  return out;
+}
+for (const f of walkAll(DIST)) routes.add('/' + path.relative(DIST, f).replace(/\\/g, '/'));
 for (const extra of ['/sitemap.xml', '/rss.xml', '/robots.txt', '/llms.txt', '/favicon.svg', '/manifest.webmanifest'])
   if (fs.existsSync(path.join(DIST, extra.slice(1)))) routes.add(extra);
 
