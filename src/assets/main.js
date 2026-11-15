@@ -437,6 +437,36 @@
     });
   }
 
+  /* ---------- video facade: load YouTube only on click ---------- */
+  const playVideo = (el) => {
+    const id = el.dataset.video;
+    if (!id || el.dataset.loaded === 'true') return;
+    el.dataset.loaded = 'true';
+    const frame = document.createElement('iframe');
+    frame.src =
+      'https://www.youtube-nocookie.com/embed/' +
+      encodeURIComponent(id) +
+      '?autoplay=1&rel=0&modestbranding=1';
+    frame.title = el.getAttribute('aria-label') || 'Video player';
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.loading = 'lazy';
+    el.innerHTML = '';
+    el.appendChild(frame);
+    el.removeAttribute('role');
+    el.removeAttribute('tabindex');
+    el.style.cursor = 'default';
+  };
+  $$('[data-video]').forEach((el) => {
+    el.addEventListener('click', () => playVideo(el));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        playVideo(el);
+      }
+    });
+  });
+
   /* ---------- copy link ---------- */
   $$('[data-copy]').forEach((b) =>
     b.addEventListener('click', async () => {

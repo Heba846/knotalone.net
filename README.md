@@ -46,6 +46,8 @@ faq2_a: …
 
 - `tags` must match topic slugs in `content/data.mjs` (`overthinking`, `attachment`, `breakups`, `adhd`, `healing`).
 - Up to 8 FAQ pairs; they render as an accordion **and** as `FAQPage` structured data.
+- `video:` (a YouTube id or URL) embeds the episode, adds `VideoObject` schema and lists it on
+  `/videos/`. Optional `videoDuration` ("6 min"), `videoDate`, `videoISO` ("PT6M30S"), `videoTitle`.
 - Markdown extras: `::: try`, `::: science`, `::: careful` callout blocks.
 
 ## What gets generated
@@ -59,6 +61,8 @@ Every page ships JSON-LD: `Organization`, `WebSite` + `SearchAction`, plus `Arti
 ## Going live
 
 - [`docs/CHECKLIST.md`](docs/CHECKLIST.md) — the 14-day launch checklist, one block a day.
+- [`docs/CONTENT-CALENDAR.md`](docs/CONTENT-CALENDAR.md) — the 30-day video ↔ article ↔ printable map.
+- [`docs/BACKLINKS.md`](docs/BACKLINKS.md) — verified backlink, directory and outreach targets.
 - [`docs/LAUNCH.md`](docs/LAUNCH.md) — DNS, GitHub Pages, Search Console, Bing, keyword map,
   and the AEO reasoning behind how the pages are written.
 

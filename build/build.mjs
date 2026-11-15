@@ -93,6 +93,97 @@ function bookCover(title, by, tint = 'var(--rope)') {
   </div>`;
 }
 
+/* ---- video pairing ----------------------------------------------------
+   An article gets its episode by adding `video:` to the frontmatter — a
+   YouTube id or any YouTube URL. Nothing renders until it is set.        */
+function videoId(v) {
+  if (!v) return '';
+  const m = String(v).trim().match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{6,})/);
+  return m ? m[1] : String(v).trim();
+}
+
+function videoEmbed(a, { label = 'Watch the episode' } = {}) {
+  const id = videoId(a.video);
+  if (!id) return '';
+  return `<div class="video" data-video="${esc(id)}" role="button" tabindex="0" aria-label="Play: ${esc(a.title)}">
+    <img src="https://i.ytimg.com/vi/${esc(id)}/maxresdefault.jpg" alt="Video thumbnail: ${esc(a.title)}" loading="lazy" decoding="async" width="1280" height="720">
+    <span class="video__play"><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></span>
+    <span class="video__label">${esc(label)}${a.videoDuration ? ` · ${esc(a.videoDuration)}` : ''}</span>
+  </div>`;
+}
+
+function videoGraph(a) {
+  const id = videoId(a.video);
+  if (!id) return null;
+  return {
+    '@type': 'VideoObject',
+    '@id': abs(a.url) + '#video',
+    name: a.videoTitle || a.title,
+    description: a.summary,
+    thumbnailUrl: [`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`],
+    uploadDate: a.videoDate || a.date,
+    contentUrl: `https://www.youtube.com/watch?v=${id}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
+    publisher: { '@id': ORG_ID },
+    inLanguage: 'en',
+    isFamilyFriendly: true,
+    ...(a.videoISO ? { duration: a.videoISO } : {}),
+  };
+}
+
+function freeRelated(f) {
+  const t = topicOf(f.topic);
+  if (!t) return '';
+  const game = games.find((g) => g.topic === t.slug);
+  return `<div class="card card--feature">
+    <span class="eyebrow">Where this came from</span>
+    <h3>The thinking behind the page</h3>
+    <p class="muted">This sheet is one page of a longer idea. If you want the mechanism underneath it, start on the <a href="/topics/${t.slug}/" style="color:var(--accent)">${esc(t.name.toLowerCase())} hub</a>${game ? `, or feel it happen in <a href="/games/${game.slug}/" style="color:var(--accent)">${esc(game.title)}</a>` : ''}.</p>
+  </div>`;
+}
+
+function nextSteps(a) {
+  const t = topicOf(a.tags[0]);
+  if (!t) return '';
+  const game = games.find((g) => g.topic === t.slug) || games[0];
+  const sheet = freebies.find((f) => f.topic === t.slug) || freebies[0];
+  const book = workbooks.find((w) => w.topic === t.slug);
+  const cards = [
+    game && {
+      kind: 'Play it', title: game.title, desc: game.tagline,
+      href: `/games/${game.slug}/`, cta: `${game.minutes} min, free`,
+    },
+    sheet && {
+      kind: 'Print it', title: sheet.title, desc: sheet.desc,
+      href: `/free/${sheet.slug}/`, cta: sheet.file ? 'Free PDF' : 'Coming soon',
+    },
+    book && {
+      kind: 'Work through it', title: book.title, desc: book.sub,
+      href: `/workbooks/${book.slug}/`, cta: `${book.pages} pages`,
+    },
+  ].filter(Boolean);
+
+  return `
+  <section class="section section--tight" style="background:var(--bg-soft);border-block:1px solid var(--line)">
+    <div class="wrap stack-lg">
+      <div class="stack" style="max-width:48ch">
+        <span class="eyebrow">Don't just read it</span>
+        <h2>What to do with this tonight</h2>
+        <p class="muted">Understanding changes very little on its own. These three take between two minutes and a week, and they all work on the same mechanism this article describes.</p>
+      </div>
+      <div class="grid grid--3">
+        ${cards.map((c) => `<article class="card">
+          <span class="chip chip--calm">${esc(c.kind)}</span>
+          <h3><a href="${c.href}">${esc(c.title)}</a></h3>
+          <p class="muted" style="font-size:.95rem">${esc(c.desc)}</p>
+          <div class="card__meta"><span>${esc(c.cta)}</span></div>
+        </article>`).join('')}
+      </div>
+      <p><a class="btn btn--ghost btn--sm" href="/topics/${t.slug}/">Everything on ${esc(t.name.toLowerCase())} ${icons.arrow}</a></p>
+    </div>
+  </section>`;
+}
+
 const untangler = `
 <section class="section untangle" id="untangle" data-untangle>
   <div class="wrap">
@@ -423,6 +514,8 @@ async function buildArticles(articles) {
         <div class="article-layout">
           <div class="prose">
             ${a.answer ? `<div class="answer"><span class="eyebrow">The short answer</span><p>${esc(a.answer)}</p></div>` : ''}
+            ${videoEmbed(a)}
+            ${a.video ? '<p class="video__note">Nothing loads from YouTube until you press play.</p>' : ''}
             ${a.html}
             <hr>
             <p class="dim">Knot Alone is educational and does not diagnose or treat anything. If you are in crisis, contact local emergency services or a crisis line in your country.</p>
@@ -435,6 +528,7 @@ async function buildArticles(articles) {
         </div>
       </div>
     </article>
+    ${nextSteps(a)}
     ${faqSection(a.faqs)}
     ${related.length
       ? `<section class="section section--tight"><div class="wrap stack-lg"><h2>Read next</h2><div class="grid grid--3">${related.map(articleCard).join('')}</div></div></section>`
@@ -453,6 +547,7 @@ async function buildArticles(articles) {
       graph: [
         breadcrumbGraph(trail),
         faqGraph(a.faqs, a.url),
+        videoGraph(a),
         {
           '@type': 'Article',
           '@id': abs(a.url) + '#article',
@@ -753,6 +848,7 @@ async function buildFree() {
           </div>
           ${f.file ? '<p class="dim">No email needed. Print it, copy it, hand it to a friend.</p>' : '<p class="dim">This one is being finished right now — the Readers\' Line gets it first.</p>'}
         </div>
+        ${freeRelated(f)}
         <div class="card card--feature">
           <h3>How to use it</h3>
           <p class="muted">Print it and put it where the problem actually happens — beside the bed, in the bag, on the fridge. A tool you have to go looking for is a tool you will not use at the moment you need it.</p>
@@ -773,7 +869,7 @@ async function buildFree() {
 
 /* ============================ games ============================ */
 
-async function buildGames() {
+async function buildGames(articles = []) {
   const body = `
   ${breadcrumbs([{ href: '/', label: 'Home' }, { href: '/games/', label: 'Mind Games' }])}
   <section class="section section--tight">
@@ -815,6 +911,7 @@ async function buildGames() {
 
   for (const g of games) {
     const t = topicOf(g.topic);
+    const pairedArticle = articles.find((a) => a.tags[0] === g.topic) || articles.find((a) => a.tags.includes(g.topic));
     const trail = [
       { href: '/', label: 'Home' },
       { href: '/games/', label: 'Mind Games' },
@@ -858,6 +955,7 @@ async function buildGames() {
           <h1>${esc(g.title)}</h1>
           <p class="lede">${esc(g.tagline)}</p>
           ${g.blurb ? `<p class="muted">${esc(g.blurb)}</p>` : ''}
+          ${pairedArticle ? `<p class="muted">Prefer to read first? <a href="${pairedArticle.url}" style="color:var(--accent)">${esc(pairedArticle.title)}</a> explains the mechanism this game puts you inside.</p>` : ''}
           <div class="row">${saveButton('game:' + g.slug, 'Save')}<button class="save-btn" data-copy="${abs(`/games/${g.slug}/`)}">Copy link</button></div>
         </div>
       </div>
@@ -894,6 +992,85 @@ async function buildGames() {
       ],
     }), { priority: 0.8, changefreq: 'monthly' });
   }
+}
+
+/* ============================ videos ============================ */
+
+async function buildVideos(articles) {
+  const withVideo = articles.filter((a) => videoId(a.video));
+  const waiting = articles.filter((a) => !videoId(a.video));
+  const trail = [{ href: '/', label: 'Home' }, { href: '/videos/', label: 'Videos' }];
+
+  const body = `
+  ${breadcrumbs(trail)}
+  <section class="section section--tight">
+    <div class="wrap stack-lg">
+      <div class="stack" style="max-width:56ch">
+        <span class="eyebrow">Watch</span>
+        <h1>Every episode, with the written version underneath</h1>
+        <p class="lede">Short animated explainers — one behaviour per episode. Each one has a full article beside it, so you can watch it, read it, or print the page that goes with it.</p>
+        <p class="row">
+          ${site.youtube ? `<a class="btn" href="${site.youtube}" target="_blank" rel="noopener">Subscribe on YouTube ${icons.arrow}</a>` : ''}
+          <a class="btn btn--ghost" href="/articles/">Read instead</a>
+        </p>
+      </div>
+
+      ${withVideo.length
+        ? `<div class="stack-lg">${withVideo
+            .map(
+              (a) => `<article class="ep">
+                ${videoEmbed(a, { label: 'Play' })}
+                <div class="stack">
+                  <div class="row" style="gap:.4rem">${a.tags.slice(0, 2).map((t) => `<a class="chip" href="/topics/${t}/">${esc(topicOf(t)?.name || t)}</a>`).join('')}</div>
+                  <h2 style="font-size:1.4rem"><a href="${a.url}">${esc(a.videoTitle || a.title)}</a></h2>
+                  <p class="muted">${esc(a.summary)}</p>
+                  <p><a class="btn btn--ghost btn--sm" href="${a.url}">Read the written version ${icons.arrow}</a></p>
+                </div>
+              </article>`
+            )
+            .join('')}</div>`
+        : `<div class="card card--feature">
+            <span class="chip chip--accent">Episode 1 lands soon</span>
+            <h3>The first run is thirty episodes, one a day</h3>
+            <p class="muted">They are being scheduled now. Every episode gets a written version on this site the same day — same question, same answer, plus the printable that goes with it. The fastest way to catch the first one is the Readers' Line.</p>
+            <p class="row"><a class="btn btn--sm" href="/readers-line/">Get the first episode by email</a>${site.youtube ? `<a class="btn btn--ghost btn--sm" href="${site.youtube}" target="_blank" rel="noopener">Subscribe on YouTube</a>` : ''}</p>
+          </div>`}
+
+      ${waiting.length
+        ? `<div class="stack-lg">
+            <div class="stack" style="max-width:52ch">
+              <span class="eyebrow">Already written</span>
+              <h2>Articles waiting for their episode</h2>
+              <p class="muted">These exist in full today. The video version is in the queue.</p>
+            </div>
+            <div class="grid grid--3">${waiting.map(articleCard).join('')}</div>
+          </div>`
+        : ''}
+    </div>
+  </section>`;
+
+  await emit('/videos/', layout({
+    title: 'Videos — short psychology explainers | Knot Alone',
+    description:
+      'Short animated psychology explainers on overthinking, attachment, breakups and ADHD — each episode paired with a full written article and a free printable.',
+    path: '/videos/',
+    body,
+    graph: [
+      breadcrumbGraph(trail),
+      {
+        '@type': 'CollectionPage',
+        '@id': abs('/videos/') + '#page',
+        name: 'Videos — Knot Alone',
+        url: abs('/videos/'),
+        isPartOf: { '@id': SITE_ID },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: withVideo.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: abs(a.url), name: a.videoTitle || a.title })),
+        },
+      },
+      ...withVideo.map(videoGraph).filter(Boolean),
+    ],
+  }), { priority: 0.9, changefreq: 'weekly' });
 }
 
 /* ============================ novels ============================ */
@@ -1539,7 +1716,8 @@ async function main() {
   await buildTopics(articles);
   await buildWorkbooks();
   await buildFree();
-  await buildGames();
+  await buildGames(articles);
+  await buildVideos(articles);
   await buildNovels();
   await buildKids();
   await buildStatic(articles);

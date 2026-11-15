@@ -193,6 +193,36 @@ export function newsletterCard({ compact = false } = {}) {
   </div>`;
 }
 
+/* ---------------- analytics ----------------
+   Nothing renders unless an id is set in build/config.mjs. GA4 is loaded
+   with ad features and ad personalisation off; Plausible is cookieless.
+   Both are skipped for visitors who send Do Not Track.                   */
+function analyticsTags() {
+  const out = [];
+  if (site.plausible) {
+    out.push(
+      `<script defer data-domain="${esc(site.plausible)}" src="https://plausible.io/js/script.outbound-links.js"></script>`
+    );
+  }
+  if (site.ga4Id) {
+    out.push(`<script>
+    (function(){
+      if (navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
+      var s=document.createElement('script');
+      s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=${esc(site.ga4Id)}';
+      document.head.appendChild(s);
+      window.dataLayer=window.dataLayer||[];
+      function gtag(){dataLayer.push(arguments)}
+      window.gtag=gtag;
+      gtag('js', new Date());
+      gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
+      gtag('config','${esc(site.ga4Id)}',{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
+    })();
+    </script>`);
+  }
+  return out.join('\n  ');
+}
+
 /* ---------------- layout ---------------- */
 export function layout({
   title,
@@ -239,6 +269,7 @@ ${metaBlock({ title, description, path, image, type, published, modified, noinde
     (function(){try{var t=localStorage.getItem('ka-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}})();
   </script>
   <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
+  ${analyticsTags()}
 </head>
 <body class="${bodyClass}">
   <a class="skip" href="#main">Skip to content</a>
@@ -265,6 +296,7 @@ ${body}
           <h4>Understand</h4>
           <ul>
             <li><a href="/articles/">Articles</a></li>
+            <li><a href="/videos/">Videos</a></li>
             <li><a href="/topics/overthinking/">Overthinking</a></li>
             <li><a href="/topics/attachment/">Attachment</a></li>
             <li><a href="/topics/breakups/">Breakups</a></li>
