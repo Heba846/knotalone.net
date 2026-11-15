@@ -700,6 +700,7 @@ async function buildWorkbooks() {
             </div>
             <h1>${esc(w.title)}</h1>
             <p class="lede">${esc(w.sub)}</p>
+            ${w.author ? `<p class="dim">by ${esc(w.author)}</p>` : ''}
             <div class="answer"><p style="font-family:var(--display);font-size:1.15rem;line-height:1.35">${esc(w.hook)}</p></div>
             <p>${esc(w.promise)}</p>
             <div class="row">
@@ -709,12 +710,26 @@ async function buildWorkbooks() {
               ${free ? `<a class="btn btn--ghost" href="/free/${free.slug}/">Try the free page first</a>` : ''}
               ${saveButton('workbook:' + w.slug, 'Save')}
             </div>
+            ${w.kindleNote ? `<p class="dim">${esc(w.kindleNote)}</p>` : ''}
             <p class="dim">Amazon link — as an Amazon Associate we may earn from qualifying purchases. Educational, not therapy.</p>
           </div>
         </div>
       </div>
     </section>
 
+    ${w.inside || (w.different && w.different.length)
+      ? `<section class="section section--tight">
+          <div class="wrap narrow stack-lg">
+            ${w.different && w.different.length ? `<div class="stack">
+              <span class="eyebrow">What makes this one different</span>
+              <h2>Three things, stated plainly</h2>
+              <ul class="stack" style="list-style:none;padding:0">${w.different.map((x) => `<li class="row" style="gap:.6rem;align-items:flex-start"><span style="color:var(--accent)">✶</span><span>${esc(x)}</span></li>`).join('')}</ul>
+            </div>` : ''}
+            ${w.inside ? `<div class="callout callout--try"><p class="callout__title">It is also a workbook</p><p>${esc(w.inside)}</p></div>` : ''}
+            ${w.warning ? `<div class="callout callout--careful"><p class="callout__title">Content note</p><p>${esc(w.warning)}</p></div>` : ''}
+          </div>
+        </section>`
+      : ''}
     <section class="section section--tight" style="background:var(--bg-soft);border-block:1px solid var(--line)">
       <div class="wrap grid grid--2">
         <div class="stack">
@@ -753,6 +768,7 @@ async function buildWorkbooks() {
           description: `${w.sub}. ${w.promise}`,
           url: abs(`/workbooks/${w.slug}/`),
           brand: { '@id': ORG_ID },
+          ...(w.author ? { author: { '@type': 'Person', name: w.author } } : {}),
           category: 'Book',
           ...(w.buy && w.price
             ? {
@@ -1085,18 +1101,29 @@ async function buildNovels() {
       <div class="stack" style="max-width:58ch">
         <span class="eyebrow">Novels · ${esc(novels[0]?.penName || '')}</span>
         <h1>The tropes work on you for a reason. Here they are, used on purpose.</h1>
-        <p class="lede">Arranged marriage. The runaway groom. The grovel arc. Written by someone who spends the rest of the week explaining exactly why those hooks pull — and then pulls them anyway.</p>
+        <p class="lede">Marriage of convenience. The runaway groom. The secret baby. Written by someone who spends the rest of the week explaining exactly why those hooks pull — and then pulls them anyway.</p>
+        <p class="muted"><strong>Both are closed-door.</strong> Romantic suspense, a smart heroine and a guaranteed happy ending, with no explicit scenes.</p>
       </div>
       <div class="grid grid--2">
         ${novels.map((n) => `<article class="card card--feature">
-          <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">18+</span></div>
+          <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}</div>
           <h3><a href="/novels/${n.slug}/">${esc(n.title)}</a></h3>
-          <p class="muted">by ${esc(n.penName)}</p>
+          <p class="muted">${esc(n.sub || '')} · by ${esc(n.penName)}</p>
           ${n.hook ? `<p style="font-family:var(--display);font-size:1.1rem;line-height:1.35">${esc(n.hook)}</p>` : ''}
           ${n.tropes.length ? `<div class="trope-row">${n.tropes.slice(0, 4).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
           <p><a class="btn btn--sm" href="/novels/${n.slug}/">See the book ${icons.arrow}</a></p>
         </article>`).join('')}
       </div>
+      ${(() => {
+        const memoir = workbooks.find((w) => w.slug === 'i-blamed-the-brain');
+        return memoir ? `<div class="card card--feature">
+          <span class="chip chip--accent">Also by ${esc(memoir.author || novels[0]?.penName || '')}</span>
+          <h3><a href="/workbooks/${memoir.slug}/">${esc(memoir.title)}</a></h3>
+          <p class="muted">${esc(memoir.sub)}</p>
+          <p class="muted">Not a novel — a memoir with a workbook built into every chapter. If you came for the fiction and recognised yourself anyway, this is the non-fiction one.</p>
+          <p><a class="btn btn--sm" href="/workbooks/${memoir.slug}/">See the book ${icons.arrow}</a></p>
+        </div>` : '';
+      })()}
     </div>
   </section>`;
 
@@ -1137,8 +1164,9 @@ async function buildNovels() {
         <div class="book">
           ${bookCover(n.title, n.penName, 'var(--ache)')}
           <div class="stack">
-            <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span><span class="chip">18+</span></div>
+            <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}</div>
             <h1>${esc(n.title)}</h1>
+            <p class="lede">${esc(n.sub || '')}</p>
             <p class="dim">by ${esc(n.penName)}</p>
             ${n.hook ? `<p class="lede" style="font-family:var(--display);color:var(--fg)">${esc(n.hook)}</p>` : ''}
             ${n.tropes.length ? `<div class="trope-row">${n.tropes.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
@@ -1148,6 +1176,7 @@ async function buildNovels() {
               ${!buyK && !buyP ? `<a class="btn" href="/readers-line/">Get the release email ${icons.arrow}</a>` : ''}
               ${saveButton('novel:' + n.slug, 'Save')}
             </div>
+            ${n.paperbackNote ? `<p class="dim">${esc(n.paperbackNote)}</p>` : ''}
             ${buyK || buyP ? '<p class="dim">Amazon links. As an Amazon Associate we may earn from qualifying purchases.</p>' : ''}
           </div>
         </div>
@@ -1157,7 +1186,8 @@ async function buildNovels() {
       ? `<section class="section section--tight"><div class="wrap narrow prose">
           ${n.blurb.split('\n\n').map((p) => `<p>${esc(p)}</p>`).join('')}
           ${n.stakes ? `<p><strong>${esc(n.stakes)}</strong></p>` : ''}
-          <div class="callout callout--careful"><p class="callout__title">Content note</p><p>${esc(n.warning)}</p></div>
+          ${n.forReaders ? `<p class="muted">For readers of: ${esc(n.forReaders)}</p>` : ''}
+          <div class="callout callout--try"><p class="callout__title">Heat level</p><p>${esc(n.warning)}</p></div>
         </div></section>`
       : `<section class="section section--tight"><div class="wrap narrow">
           <div class="callout"><p class="callout__title">Description coming shortly</p><p>The full description for ${esc(n.title)} is being added. In the meantime the book itself is on Amazon, and the <a href="/readers-line/">Readers' Line</a> carries new releases first.</p></div>

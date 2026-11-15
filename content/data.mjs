@@ -55,6 +55,35 @@ export const topics = [
 
 export const workbooks = [
   {
+    slug: 'i-blamed-the-brain',
+    title: 'I Blamed the Brain',
+    sub: 'A Memoir of Late-Diagnosed ADHD and Masking — with the Workbook I Needed at Seven',
+    topic: 'adhd',
+    author: 'Erena Jabrial',
+    buy: 'https://www.amazon.com/dp/B0HQ7Z2V6M',
+    format: 'Paperback on Amazon',
+    kindleNote: 'The Kindle edition is in review.',
+    hook: 'An acquittal letter, delivered to the wrong defendant.',
+    promise:
+      'A diagnosis that arrived three decades late, and the childhood that made it necessary — with a workbook built into every chapter.',
+    for: [
+      'You were called clever, but — lazy, but — too sensitive, but',
+      'You were treated for depression or anxiety for years before anyone asked a different question',
+      'You are competent at work and cannot explain why it costs what it costs',
+      'You have been performing wellness so convincingly that nobody has ever thought to worry about you',
+    ],
+    different: [
+      'It is a memoir, not a manual — a real childhood, a real diagnosis at thirty, and the ten years of being partly right that came before it.',
+      'Every clinical claim is sourced: 94 numbered notes. Where the evidence is thin or contested, the book says so — including the popular ADHD statistics it takes apart.',
+      'It does not sell you a superpower. No cures, no hacks, and no promise that understanding fixes everything.',
+    ],
+    inside:
+      'Every chapter ends with The Notebook — the three-line protocol an eight-year-old invented for herself in the back of a school exercise book — and one thing to try this week, small enough to actually keep. There are ruled pages to write on, and fourteen nights of guided entries at the back.',
+    warning:
+      'Contains descriptions of childhood emotional abuse and family conflict. It is not a substitute for assessment or treatment, and says so repeatedly.',
+    freebie: 'task-starter-cards',
+  },
+  {
     slug: 'how-to-get-over-someone-you-still-love',
     title: 'How to Get Over Someone You Still Love',
     sub: "30 days of practical steps for grief, self-worth and life after a separation you didn't choose",
@@ -348,28 +377,37 @@ export const games = [
 
 export const novels = [
   {
-    slug: 'marry-to-don',
-    title: 'Marry to Don',
+    slug: 'married-to-the-don',
+    title: 'Married to the Don to Keep Me Silent',
+    sub: 'A Closed-Door Marriage of Convenience Mafia Romance',
     penName: 'Erena Jabrial',
     status: 'Out now',
-    // Blurb, tropes and content note to come from the author — nothing
-    // invented goes on this page.
-    blurb: '',
-    tropes: [],
-    buyKindle: '',
+    closedDoor: true,
+    hook: 'He married her to keep her silent. He forgot the choice to speak belongs to the wife.',
+    tropes: ['Marriage of convenience', 'Mafia romance', 'Forced marriage', 'He falls first', 'Legal thriller spine', 'Guaranteed HEA'],
+    blurb: "At 3 a.m., ER doctor Ivy Marlowe stitches a stranger's arm and types his name into the chart when he pays her not to. Thirty minutes later, she watches him stand over a dying man in her hospital garage with a gun in his hand.\n\nNow she's the FBI's only witness against Nico Vescari, the quiet, dangerous don of Red Hook. A rival family wants her dead before she can testify. Her little brother owes them forty thousand dollars. And Nico has one offer: marry him. A wife can't be forced to testify against her husband.\n\nHer terms: her own bedroom with a lock on her side. Her brother's debt erased. Her residency untouched. And he never lies to her.\n\nHe agrees to all of it. He just won't always answer.\n\nBut Ivy is a doctor, and doctors notice things. Like the splint she built on his right hand. Like the gun that was in his left. Like the fact that someone inside his own house is feeding her schedule to the men trying to kill her.",
+    stakes: "The privilege is hers. Only she can keep it, and only she can break it.",
+    forReaders: 'Readers of clean and closed-door mafia romance, forced marriage romance, and romantic suspense with a smart heroine.',
+    warning: 'Closed-door romance — no explicit scenes.',
+    buyKindle: 'https://www.amazon.com/dp/B0HPZSG98N',
     buyPaperback: '',
-    warning: 'Adult romance. 18+.',
   },
   {
     slug: 'left-at-the-altar',
     title: 'Left at the Altar',
+    sub: 'A Secret Baby Second Chance Romance',
     penName: 'Erena Jabrial',
     status: 'Out now',
-    blurb: '',
-    tropes: [],
-    buyKindle: '',
+    closedDoor: true,
+    hook: 'He played a recording at the altar and walked away from his own wedding.',
+    tropes: ['Second chance', 'Secret baby', 'Closed-door', 'Complete with epilogue', 'No cliffhanger'],
+    blurb: "It took Wren Calloway five years to find out it was a line from a romance novel she'd narrated in a coat closet for four hundred dollars.\n\nNow she's back in his building as the voice of his company's biggest product \u2014 and her four-year-old son has a white streak in his hair, just left of center.\n\nSomebody built that sentence out of fourteen hours of her. Somebody in her own family.\n\nShe's going to find the hand that did it. On paper. In front of everybody.",
+    stakes: 'A heroine who wins with her own professional skill.',
+    forReaders: 'Readers of closed-door second chance romance with a secret baby and a five-year lie.',
+    warning: 'Closed-door romance — no explicit scenes.',
+    buyKindle: 'https://www.amazon.com/dp/B0HRQNC6TK',
     buyPaperback: '',
-    warning: 'Adult romance. 18+.',
+    paperbackNote: 'The paperback is new and still in review.',
   },
 ];
 
