@@ -1102,11 +1102,11 @@ async function buildNovels() {
         <span class="eyebrow">Novels · ${esc(novels[0]?.penName || '')}</span>
         <h1>The tropes work on you for a reason. Here they are, used on purpose.</h1>
         <p class="lede">Marriage of convenience. The runaway groom. The secret baby. Written by someone who spends the rest of the week explaining exactly why those hooks pull — and then pulls them anyway.</p>
-        <p class="muted"><strong>Both are closed-door.</strong> Romantic suspense, a smart heroine and a guaranteed happy ending, with no explicit scenes.</p>
+        <p class="muted"><strong>Both are closed-door</strong> — no explicit scenes, a smart heroine and a guaranteed happy ending. Each page says where the book still earns its 18+.</p>
       </div>
       <div class="grid grid--2">
         ${novels.map((n) => `<article class="card card--feature">
-          <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}</div>
+          <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}${n.adult ? '<span class="chip">18+</span>' : ''}</div>
           <h3><a href="/novels/${n.slug}/">${esc(n.title)}</a></h3>
           <p class="muted">${esc(n.sub || '')} · by ${esc(n.penName)}</p>
           ${n.hook ? `<p style="font-family:var(--display);font-size:1.1rem;line-height:1.35">${esc(n.hook)}</p>` : ''}
@@ -1149,6 +1149,15 @@ async function buildNovels() {
     ],
   }), { priority: 0.8, changefreq: 'monthly' });
 
+  // the first deploy used /novels/marry-to-don/ — keep it pointing somewhere
+  await emit('/novels/marry-to-don/', `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Moved — Married to the Don to Keep Me Silent</title>
+<meta name="description" content="This page has moved to Married to the Don to Keep Me Silent, a closed-door marriage of convenience mafia romance by Erena Jabrial.">
+<link rel="canonical" href="${abs('/novels/married-to-the-don/')}">
+<meta http-equiv="refresh" content="0; url=/novels/married-to-the-don/">
+<meta name="robots" content="noindex,follow"></head>
+<body><p>This book is now at <a href="/novels/married-to-the-don/">Married to the Don to Keep Me Silent</a>.</p></body></html>`, { index: false });
+
   for (const n of novels) {
     const trail = [
       { href: '/', label: 'Home' },
@@ -1164,7 +1173,7 @@ async function buildNovels() {
         <div class="book">
           ${bookCover(n.title, n.penName, 'var(--ache)')}
           <div class="stack">
-            <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}</div>
+            <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}${n.adult ? '<span class="chip">18+</span>' : ''}</div>
             <h1>${esc(n.title)}</h1>
             <p class="lede">${esc(n.sub || '')}</p>
             <p class="dim">by ${esc(n.penName)}</p>
@@ -1187,7 +1196,7 @@ async function buildNovels() {
           ${n.blurb.split('\n\n').map((p) => `<p>${esc(p)}</p>`).join('')}
           ${n.stakes ? `<p><strong>${esc(n.stakes)}</strong></p>` : ''}
           ${n.forReaders ? `<p class="muted">For readers of: ${esc(n.forReaders)}</p>` : ''}
-          <div class="callout callout--try"><p class="callout__title">Heat level</p><p>${esc(n.warning)}</p></div>
+          <div class="callout ${n.adult ? 'callout--careful' : 'callout--try'}"><p class="callout__title">Heat level &amp; content</p><p>${esc(n.warning)}</p></div>
         </div></section>`
       : `<section class="section section--tight"><div class="wrap narrow">
           <div class="callout"><p class="callout__title">Description coming shortly</p><p>The full description for ${esc(n.title)} is being added. In the meantime the book itself is on Amazon, and the <a href="/readers-line/">Readers' Line</a> carries new releases first.</p></div>
@@ -1220,7 +1229,8 @@ async function buildNovels() {
           inLanguage: 'en',
           ...(n.hook ? { abstract: n.hook } : {}),
           ...(n.blurb ? { description: n.blurb.split('\n\n')[0] } : {}),
-          contentRating: 'Adults only (18+)',
+          ...(n.adult ? { contentRating: 'Adults only (18+)' } : {}),
+          ...(n.closedDoor ? { abstract: n.hook, isFamilyFriendly: false } : {}),
           ...(buyK || buyP ? { offers: { '@type': 'Offer', url: buyK || buyP, availability: 'https://schema.org/InStock' } } : {}),
         },
       ],
