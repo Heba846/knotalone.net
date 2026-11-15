@@ -378,6 +378,7 @@ export const games = [
 export const novels = [
   {
     slug: 'married-to-the-don',
+    cover: '/assets/covers/married-to-the-don.jpg',
     title: 'Married to the Don to Keep Me Silent',
     sub: 'A Closed-Door Marriage of Convenience Mafia Romance',
     penName: 'Erena Jabrial',
@@ -395,6 +396,7 @@ export const novels = [
   },
   {
     slug: 'left-at-the-altar',
+    cover: '/assets/covers/left-at-the-altar.jpg',
     title: 'Left at the Altar',
     sub: 'A Secret Baby Second Chance Romance',
     penName: 'Erena Jabrial',

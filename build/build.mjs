@@ -89,7 +89,12 @@ function freebieRow(f) {
   </div>`;
 }
 
-function bookCover(title, by, tint = 'var(--rope)') {
+function bookCover(title, by, tint = 'var(--rope)', cover = '') {
+  if (cover) {
+    return `<div class="book__cover book__cover--art">
+      <img src="${cover}" alt="Cover of ${esc(title)} by ${esc(by)}" width="800" height="1200" loading="lazy" decoding="async">
+    </div>`;
+  }
   return `<div class="book__cover" style="--tile-tint:${tint}">
     <div><p class="t">${esc(title)}</p><p class="by">${esc(by)}</p></div>
   </div>`;
@@ -1106,6 +1111,7 @@ async function buildNovels() {
       </div>
       <div class="grid grid--2">
         ${novels.map((n) => `<article class="card card--feature">
+          ${n.cover ? `<a href="/novels/${n.slug}/" class="card__cover"><img src="${n.cover}" alt="Cover of ${esc(n.title)}" width="800" height="1200" loading="lazy" decoding="async"></a>` : ''}
           <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}${n.adult ? '<span class="chip">18+</span>' : ''}</div>
           <h3><a href="/novels/${n.slug}/">${esc(n.title)}</a></h3>
           <p class="muted">${esc(n.sub || '')} · by ${esc(n.penName)}</p>
@@ -1171,7 +1177,7 @@ async function buildNovels() {
     <section class="section section--tight">
       <div class="wrap">
         <div class="book">
-          ${bookCover(n.title, n.penName, 'var(--ache)')}
+          ${bookCover(n.title, n.penName, 'var(--ache)', n.cover)}
           <div class="stack">
             <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span>${n.closedDoor ? '<span class="chip chip--calm">Closed-door</span>' : ''}${n.adult ? '<span class="chip">18+</span>' : ''}</div>
             <h1>${esc(n.title)}</h1>
@@ -1216,6 +1222,7 @@ async function buildNovels() {
       path: `/novels/${n.slug}/`,
       body,
       type: 'book',
+      ...(n.cover ? { image: n.cover } : {}),
       graph: [
         breadcrumbGraph(trail),
         {
@@ -1227,6 +1234,7 @@ async function buildNovels() {
           publisher: { '@id': ORG_ID },
           genre: ['Romance', 'Contemporary romance'],
           inLanguage: 'en',
+          ...(n.cover ? { image: abs(n.cover) } : {}),
           ...(n.hook ? { abstract: n.hook } : {}),
           ...(n.blurb ? { description: n.blurb.split('\n\n')[0] } : {}),
           ...(n.adult ? { contentRating: 'Adults only (18+)' } : {}),
