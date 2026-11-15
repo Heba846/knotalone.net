@@ -2,7 +2,10 @@ name: Build & deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # GitHub Pages only deploys from the repository's DEFAULT branch.
+    # Both are listed so the site ships whichever one is default right now;
+    # once `main` is the default branch, the second entry can go.
+    branches: [main, claude/kind-allen-mr90gr]
   workflow_dispatch:
 
 permissions:
