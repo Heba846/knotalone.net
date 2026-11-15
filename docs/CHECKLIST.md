@@ -9,8 +9,10 @@ can be handed back to Claude.
 ## Phase 1 — Get it on the internet (days 1–3)
 
 ### Day 1 — Domain & deploy
-- [ ] ⛔ Open the repo → **Settings → Pages** and confirm the source says **GitHub Actions**
-      *(the workflow now sets this itself on first run — just verify it stuck)*
+- [x] ~~Pages source set to GitHub Actions~~ — **done**, the first deploy went green on its own
+- [ ] ⛔ **Settings → General → Default branch → switch it to `main`**
+      *(it is still the `claude/…` dev branch; Pages only deploys from the default branch, so
+      the workflow lists both branches as a workaround until this is done)*
 - [ ] ⛔ At your registrar, add the four `A` records and four `AAAA` records from
       [`LAUNCH.md`](LAUNCH.md#2-dns-at-your-registrar), plus `www` → `heba846.github.io`
 - [ ] ⛔ Settings → Pages → **Custom domain** → `knotalone.net` → Save
