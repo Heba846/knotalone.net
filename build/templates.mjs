@@ -183,7 +183,12 @@ export function newsletterCard({ compact = false } = {}) {
     <span class="eyebrow">Readers' Line</span>
     <h2 style="max-width:22ch">One email. One knot, loosened.</h2>
     <p class="lede" style="max-width:52ch">Every week: one behaviour explained in plain language, one small thing to try, and whatever we just made free. No lectures, no diagnosing, no 40-email funnel.</p>
-    <form class="stack" action="/readers-line/?subscribed=1" method="get" data-newsletter>
+    ${site.newsletterUrl
+      ? `<div class="stack">
+          <p><a class="btn" href="${site.newsletterUrl}" target="_blank" rel="noopener">Join the line ${icons.arrow}</a></p>
+          <p class="dim">Free. Unsubscribe in one click. We never sell your email.</p>
+        </div>`
+      : `<form class="stack" action="/readers-line/?subscribed=1" method="get" data-newsletter>
       <div class="form-row">
         <div class="field">
           <label for="nl-email${compact ? '-c' : ''}">Your email</label>
@@ -192,7 +197,7 @@ export function newsletterCard({ compact = false } = {}) {
         <button class="btn" type="submit" style="align-self:end">Join the line ${icons.arrow}</button>
       </div>
       <p class="dim">Free. Unsubscribe in one click. We never sell your email.</p>
-    </form>
+    </form>`}
   </div>`;
 }
 

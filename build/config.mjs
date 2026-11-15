@@ -18,12 +18,17 @@ export const site = {
   //   ga4Id       — Google Analytics 4 measurement ID, e.g. 'G-XXXXXXXXXX'
   //   plausible   — your domain on Plausible, e.g. 'knotalone.net' (cookieless)
   // Leave both empty and the site ships with no tracking at all.
-  ga4Id: '',
+  ga4Id: 'G-LWVR3QE8JS',
   plausible: '',
 
   // Gumroad store, e.g. 'https://knotalone.gumroad.com' (public store URL,
   // NOT the gumroad.com/products dashboard, which needs a login).
   gumroad: 'https://thoughtkindworkbook.gumroad.com',
+
+  // Where the Readers' Line signup actually goes. Set = a real button that
+  // opens it. Empty = the local placeholder form that stores nothing.
+  // Swap this one line when you move to MailerLite or Kit.
+  newsletterUrl: 'https://thoughtkindworkbook.gumroad.com/subscribe',
   gumroadToolkit: 'https://thoughtkindworkbook.gumroad.com/l/free-toolkit',
   social: {
     Instagram: 'https://instagram.com/knotalone.co',
