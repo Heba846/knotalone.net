@@ -47,18 +47,18 @@ search and the printable it hands off to.
 | 8 | ADHD time blindness ✅ | ADHD | ADHD time blindness | Task Starter Cards |
 | 9 | How long does it take to get over someone ✅ | Breakups | how long to get over someone | Do I Text Them |
 | 10 | Why one criticism outweighs ten compliments ✅ | Overthinking | why do I dwell on criticism | Spiral Stopper |
-| 11 | The 3am brain: why everything feels worse at night | Overthinking | why do problems feel worse at night | 3am Brain Dump |
-| 12 | What "the ick" actually is | Attachment | what causes the ick | Needs Checklist |
-| 13 | Why you remember the cringe thing from 2014 | Overthinking | cringe attacks intrusive memories | Spiral Stopper |
-| 14 | Anxious and avoidant: why they find each other | Attachment | anxious avoidant trap | Needs Checklist |
-| 15 | Closure is something you write, not something you get | Breakups | how to get closure without them | Closure Letters |
-| 16 | Why you clean the kitchen instead of doing the task | ADHD | productive procrastination ADHD | Task Starter Cards |
-| 17 | Rejection sensitivity: when a neutral face feels like a verdict | ADHD | rejection sensitive dysphoria explained | Spiral Stopper |
-| 18 | Why "just communicate" is useless advice | Attachment | how to express needs in a relationship | Needs Checklist |
-| 19 | The grief nobody validates: friendship breakups | Healing | friendship breakup grief | Closure Letters |
-| 20 | Why you apologise for things that aren't your fault | Attachment | why do I over-apologise | Needs Checklist |
+| 11 | Why everything feels worse at night ✅ | Overthinking | why do problems feel worse at night | 3am Brain Dump |
+| 12 | What "the ick" actually is ✅ | Attachment | what causes the ick | Needs Checklist |
+| 13 | Why you remember the cringe thing from 2014 ✅ | Overthinking | cringe attacks intrusive memories | Spiral Stopper |
+| 14 | Anxious and avoidant — why they keep finding each other ✅ | Attachment | anxious avoidant trap | Needs Checklist |
+| 15 | Closure is something you write ✅ | Breakups | how to get closure without them | Closure Letters |
+| 16 | Why you clean the kitchen instead of doing the task ✅ | ADHD | productive procrastination ADHD | Task Starter Cards |
+| 17 | When a neutral face feels like a verdict ✅ | ADHD | rejection sensitive dysphoria explained | Spiral Stopper |
+| 18 | Why "just communicate" is useless advice ✅ | Attachment | how to express needs in a relationship | Needs Checklist |
+| 19 | The grief nobody validates — when a friendship ends ✅ | Healing | friendship breakup grief | Closure Letters |
+| 20 | Why you apologise for things that aren't your fault ✅ | Attachment | why do I over-apologise | Needs Checklist |
 | 21 | Hyperfocus is not a superpower (and not a failure) | ADHD | ADHD hyperfocus explained | ADHD Day Designer |
-| 22 | Why you can't relax on your day off | Overthinking | can't relax guilt resting | Weekly Knot Planner |
+| 22 | Why you can't relax on your day off ✅ | Overthinking | can't relax guilt resting | Weekly Knot Planner |
 | 23 | The 6-week mark: why it gets worse before better | Breakups | breakup timeline weeks | Decompression Kit |
 | 24 | Masking: what it costs and why you can't just stop | ADHD | ADHD masking exhaustion | ADHD Day Designer |
 | 25 | Why you test people who have done nothing wrong | Attachment | relationship testing behaviour | Needs Checklist |
@@ -72,7 +72,8 @@ search and the printable it hands off to.
 
 ## Why this order
 
-- **Days 1–10 are already written**, so the first third of the run needs no new writing — only the video ids pasted in. That buys you breathing room while filming.
+- **Days 1–22 are now written** (21 articles), so two thirds of the run needs no new writing — only the video ids pasted in. That buys real breathing room while filming.
+- **The remaining 8 (days 21, 23–30)** are deliberately unwritten until the first week's data says which topics landed. Their video descriptions point at the topic hub and the printable in the meantime, so no link is ever dead.
 - **Days 11–30 rotate the five topics** so the channel never looks like a single-issue account and every topic hub keeps filling.
 - **Days 27–28 are the kids episodes**, placed late on purpose: by then the channel has adult-audience proof, and they are the two that parents and teachers share hardest.
 - **Day 30 is the one that sells**, because by then the audience has watched twenty-nine explanations of a problem and the honest answer is "this is learnable" — which is what the workbook is.
