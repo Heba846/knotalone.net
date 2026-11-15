@@ -33,13 +33,12 @@ const shots = [
   ['article', '/articles/how-to-stop-overthinking-at-night/', 1440, 1100],
   ['articles-index', '/articles/', 1440, 1000],
   ['game', '/games/thought-traps/', 1440, 1000],
-  ['workbook', '/workbooks/overthinking-reset/', 1440, 1100],
+  ['workbook', '/workbooks/you-dont-need-the-text-back/', 1440, 1100],
   ['kids', '/kids/', 1440, 1000],
   ['novel', '/novels/marry-to-don/', 1440, 1000],
   ['free', '/free/', 1440, 900],
   ['light', '/', 1440, 1100],
   ['videos', '/videos/', 1440, 1000],
-  ['article-video', '/articles/adhd-time-blindness/', 1440, 1100],
 ];
 
 for (const [name, url, w, h] of shots) {

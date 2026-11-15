@@ -66,7 +66,7 @@ function gameCard(g) {
 function workbookCard(w) {
   const t = topicOf(w.topic);
   return `<article class="card" data-tags="${esc(w.topic)}" data-index="${esc(w.title + ' ' + w.sub)}">
-    <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(t?.name || '')}</span><span class="chip">${w.pages} pages</span></div>
+    <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(t?.name || '')}</span>${w.format ? `<span class="chip">${esc(w.format.split(' on ')[0])}</span>` : ''}</div>
     <h3><a href="/workbooks/${w.slug}/">${esc(w.title)}</a></h3>
     <p class="muted" style="font-size:.95rem">${esc(w.hook)}</p>
     <div class="card__meta"><span class="tile__go" style="color:var(--accent)">See inside ${icons.arrow}</span></div>
@@ -682,11 +682,9 @@ async function buildWorkbooks() {
     ];
     const faqs = [
       { q: `Who is ${w.title} for?`, a: `<ul>${w.for.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` },
-      { q: 'Who is it not for?', a: `<ul>${w.notFor.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` },
-      { q: 'How long does it take a day?', a: '<p>About ten minutes. The pages are deliberately short — a workbook you finish beats a comprehensive one you abandon on day nine.</p>' },
-      { q: 'Is it printable, or digital only?', a: '<p>Both. You get a PDF sized for A4 and US Letter, and the pages are writable in any PDF app if you would rather type than print.</p>' },
-      { q: 'Is this therapy?', a: '<p>No. It is a structured self-education tool. It does not diagnose or treat anything, and it is not a substitute for working with a professional who knows your history.</p>' },
-      { q: 'What if it does not help me?', a: '<p>Then email us and say so — we would rather refund you than have you keep a tool that is not working. Start with the free printable first if you want to test the approach at zero cost.</p>' },
+      { q: 'Where can I get it?', a: `<p>${w.buy ? `On Amazon — ${esc(w.format || 'paperback and Kindle')}.` : 'It is not out yet. The Readers\' Line gets the release first.'}</p>` },
+      { q: 'Is this therapy?', a: '<p>No. It is educational. It does not diagnose or treat anything, and it is not a substitute for working with a professional who knows your history.</p>' },
+      { q: 'Is there anything free I can try first?', a: `<p>${free ? `Yes — <a href="/free/${free.slug}/">${esc(free.title)}</a> is a free one-page printable with no email required.` : 'Yes — every printable on the <a href="/free/">free page</a> downloads instantly with no email.'}</p>` },
     ];
 
     const body = `
@@ -698,8 +696,7 @@ async function buildWorkbooks() {
           <div class="stack">
             <div class="row" style="gap:.4rem">
               <span class="chip chip--accent">${esc(t?.name || '')}</span>
-              <span class="chip">${w.pages} printable pages</span>
-              <span class="chip">10 min/day</span>
+              ${w.format ? `<span class="chip">${esc(w.format)}</span>` : ''}
             </div>
             <h1>${esc(w.title)}</h1>
             <p class="lede">${esc(w.sub)}</p>
@@ -707,22 +704,13 @@ async function buildWorkbooks() {
             <p>${esc(w.promise)}</p>
             <div class="row">
               ${w.buy
-                ? `<a class="btn" href="${w.buy}" target="_blank" rel="noopener">Get the workbook${w.price ? ` — ${esc(w.price)}` : ''} ${icons.arrow}</a>`
+                ? `<a class="btn" href="${w.buy}" target="_blank" rel="noopener sponsored">Get it on Amazon ${icons.arrow}</a>`
                 : `<a class="btn" href="/readers-line/">Tell me when it's out ${icons.arrow}</a>`}
               ${free ? `<a class="btn btn--ghost" href="/free/${free.slug}/">Try the free page first</a>` : ''}
               ${saveButton('workbook:' + w.slug, 'Save')}
             </div>
-            <p class="dim">Instant digital download. Educational, not therapy.</p>
+            <p class="dim">Amazon link — as an Amazon Associate we may earn from qualifying purchases. Educational, not therapy.</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--tight">
-      <div class="wrap stack-lg">
-        <div class="stack" style="max-width:52ch"><span class="eyebrow">What is actually missing</span><h2>Three things, not thirty</h2></div>
-        <div class="grid grid--3">
-          ${w.pillars.map((p, i) => `<article class="card"><span class="stat__n">0${i + 1}</span><h3>${esc(p.t)}</h3><p class="muted">${esc(p.d)}</p></article>`).join('')}
         </div>
       </div>
     </section>
@@ -730,18 +718,17 @@ async function buildWorkbooks() {
     <section class="section section--tight" style="background:var(--bg-soft);border-block:1px solid var(--line)">
       <div class="wrap grid grid--2">
         <div class="stack">
-          <span class="eyebrow">What you get</span>
-          <h2>Inside</h2>
-          <ul class="stack" style="list-style:none;padding:0">${w.includes.map((x) => `<li class="row" style="gap:.6rem;align-items:flex-start"><span style="color:var(--accent)">✶</span><span>${esc(x)}</span></li>`).join('')}</ul>
+          <span class="eyebrow">Who it's for</span>
+          <h2>Written for this, specifically</h2>
+          <ul class="stack" style="list-style:none;padding:0">${w.for.map((x) => `<li class="row" style="gap:.6rem;align-items:flex-start"><span style="color:var(--accent)">✶</span><span>${esc(x)}</span></li>`).join('')}</ul>
+          <p class="muted">It is educational, not therapy, and it does not diagnose anything.</p>
         </div>
         <div class="stack">
           <div class="card">
-            <h3>Where you are now</h3>
-            <p class="muted">${esc(w.for[0])}</p>
-            <hr style="border:0;border-top:1px dashed var(--line)">
-            <h3>Where this takes you</h3>
-            <p class="muted">${esc(w.promise)}</p>
-            <p>${w.buy ? `<a class="btn btn--block" href="${w.buy}" target="_blank" rel="noopener">Get it now</a>` : `<a class="btn btn--block" href="/readers-line/">Join the list for launch</a>`}</p>
+            <h3>${esc(w.title)}</h3>
+            <p class="muted">${esc(w.sub)}</p>
+            ${free ? `<p class="muted">Want to try the approach at zero cost first? <a href="/free/${free.slug}/" style="color:var(--accent)">${esc(free.title)}</a> is free and needs no email.</p>` : ''}
+            <p>${w.buy ? `<a class="btn btn--block" href="${w.buy}" target="_blank" rel="noopener sponsored">Get it on Amazon</a>` : `<a class="btn btn--block" href="/readers-line/">Join the list for launch</a>`}</p>
           </div>
         </div>
       </div>
@@ -766,7 +753,7 @@ async function buildWorkbooks() {
           description: `${w.sub}. ${w.promise}`,
           url: abs(`/workbooks/${w.slug}/`),
           brand: { '@id': ORG_ID },
-          category: 'Printable workbook',
+          category: 'Book',
           ...(w.buy && w.price
             ? {
                 offers: {
