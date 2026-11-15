@@ -351,27 +351,25 @@ export const novels = [
     slug: 'marry-to-don',
     title: 'Marry to Don',
     penName: 'Erena Jabrial',
-    series: '',
     status: 'Out now',
-    tropes: ['Arranged marriage', 'Mafia romance', 'Enemies to lovers', 'Forced proximity', 'Touch her and die'],
-    hook: 'She signed the contract to save her father. Nobody told her the don reads every clause — including the one she added in pencil.',
-    blurb:
-      'Saira Qadir has forty-eight hours to find the money her father gambled away, and one offer on the table: marry Dariel Moreno, keep her family breathing, and never ask what he does after midnight.\n\nShe takes the deal. She also takes a pen to it — one extra line, slipped in on page nine, that nobody was supposed to read.\n\nDariel reads it. And instead of tearing up the contract, he signs underneath it.\n\nWhat she expected was a cage. What she gets is a man who stands between her and every bullet in the city, who learns how she takes her coffee before he learns her middle name, and who will burn an empire rather than let her be used as currency again. What she did not expect was to start wanting the terms she was forced into.\n\nBut her father owed more than money, and the people he owed it to want the marriage dissolved — one way or another.',
-    stakes: 'She can walk away with her life. Just not with him.',
-    warning: 'Adult romance. Contains violence, references to coercion and explicit content. 18+.',
+    // Blurb, tropes and content note to come from the author — nothing
+    // invented goes on this page.
+    blurb: '',
+    tropes: [],
+    buyKindle: '',
+    buyPaperback: '',
+    warning: 'Adult romance. 18+.',
   },
   {
     slug: 'left-at-the-altar',
     title: 'Left at the Altar',
     penName: 'Erena Jabrial',
-    series: '',
     status: 'Out now',
-    tropes: ['Second chance', 'Runaway groom', 'Small town', 'Grovel arc', 'Found family'],
-    hook: 'He left her at the altar in front of three hundred people. Six years later he is back — and he is the only one who knows why.',
-    blurb:
-      'Nora Haddad has rebuilt everything: the bakery on Juniper Street, the rota of friends who show up on bad days, the version of herself that does not flinch when the church bells ring.\n\nThen Adam Reyes walks into her shop on a Tuesday, orders a coffee like it is nothing, and says the six words she has rehearsed a thousand answers to: "I need to tell you why."\n\nShe does not want the reason. Reasons are for people who are still waiting, and she stopped waiting in year two.\n\nBut the reason has a name, a hospital record, and a signature that is not his — and it is sitting at the centre of the life she built without him, holding more of it than she knows.\n\nSome men leave because they are cowards. Some leave because they were told it was the only way to keep you alive. By the time Nora learns which one he is, the choice is not his to make any more.',
-    stakes: 'Forgiving him costs her the story she survived on. Not forgiving him costs her the truth.',
-    warning: 'Adult romance. Contains grief, medical trauma and explicit content. 18+.',
+    blurb: '',
+    tropes: [],
+    buyKindle: '',
+    buyPaperback: '',
+    warning: 'Adult romance. 18+.',
   },
 ];
 

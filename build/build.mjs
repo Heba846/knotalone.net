@@ -1091,9 +1091,10 @@ async function buildNovels() {
         ${novels.map((n) => `<article class="card card--feature">
           <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">18+</span></div>
           <h3><a href="/novels/${n.slug}/">${esc(n.title)}</a></h3>
-          <p style="font-family:var(--display);font-size:1.1rem;line-height:1.35">${esc(n.hook)}</p>
-          <div class="trope-row">${n.tropes.slice(0, 4).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>
-          <p><a class="btn btn--sm" href="/novels/${n.slug}/">Read the blurb ${icons.arrow}</a></p>
+          <p class="muted">by ${esc(n.penName)}</p>
+          ${n.hook ? `<p style="font-family:var(--display);font-size:1.1rem;line-height:1.35">${esc(n.hook)}</p>` : ''}
+          ${n.tropes.length ? `<div class="trope-row">${n.tropes.slice(0, 4).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
+          <p><a class="btn btn--sm" href="/novels/${n.slug}/">See the book ${icons.arrow}</a></p>
         </article>`).join('')}
       </div>
     </div>
@@ -1127,7 +1128,8 @@ async function buildNovels() {
       { href: '/novels/', label: 'Novels' },
       { href: `/novels/${n.slug}/`, label: n.title },
     ];
-    const buy = site.amazon?.[n.slug] || '';
+    const buyK = n.buyKindle || '';
+    const buyP = n.buyPaperback || '';
     const body = `
     ${breadcrumbs(trail)}
     <section class="section section--tight">
@@ -1138,26 +1140,28 @@ async function buildNovels() {
             <div class="row" style="gap:.4rem"><span class="chip chip--accent">${esc(n.status)}</span><span class="chip">Romance</span><span class="chip">18+</span></div>
             <h1>${esc(n.title)}</h1>
             <p class="dim">by ${esc(n.penName)}</p>
-            <p class="lede" style="font-family:var(--display);color:var(--fg)">${esc(n.hook)}</p>
-            <div class="trope-row">${n.tropes.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+            ${n.hook ? `<p class="lede" style="font-family:var(--display);color:var(--fg)">${esc(n.hook)}</p>` : ''}
+            ${n.tropes.length ? `<div class="trope-row">${n.tropes.map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
             <div class="row">
-              ${buy
-                ? `<a class="btn" href="${buy}" target="_blank" rel="noopener sponsored">Read it on Amazon ${icons.arrow}</a>`
-                : `<a class="btn" href="/readers-line/">Get the release email ${icons.arrow}</a>`}
+              ${buyK ? `<a class="btn" href="${buyK}" target="_blank" rel="noopener sponsored">Read on Kindle ${icons.arrow}</a>` : ''}
+              ${buyP ? `<a class="btn ${buyK ? 'btn--ghost' : ''}" href="${buyP}" target="_blank" rel="noopener sponsored">Paperback ${icons.arrow}</a>` : ''}
+              ${!buyK && !buyP ? `<a class="btn" href="/readers-line/">Get the release email ${icons.arrow}</a>` : ''}
               ${saveButton('novel:' + n.slug, 'Save')}
             </div>
-            ${buy ? '<p class="dim">Amazon link. As an Amazon Associate we may earn from qualifying purchases.</p>' : ''}
+            ${buyK || buyP ? '<p class="dim">Amazon links. As an Amazon Associate we may earn from qualifying purchases.</p>' : ''}
           </div>
         </div>
       </div>
     </section>
-    <section class="section section--tight">
-      <div class="wrap narrow prose">
-        ${n.blurb.split('\n\n').map((p) => `<p>${esc(p)}</p>`).join('')}
-        <p><strong>${esc(n.stakes)}</strong></p>
-        <div class="callout callout--careful"><p class="callout__title">Content note</p><p>${esc(n.warning)}</p></div>
-      </div>
-    </section>
+    ${n.blurb
+      ? `<section class="section section--tight"><div class="wrap narrow prose">
+          ${n.blurb.split('\n\n').map((p) => `<p>${esc(p)}</p>`).join('')}
+          ${n.stakes ? `<p><strong>${esc(n.stakes)}</strong></p>` : ''}
+          <div class="callout callout--careful"><p class="callout__title">Content note</p><p>${esc(n.warning)}</p></div>
+        </div></section>`
+      : `<section class="section section--tight"><div class="wrap narrow">
+          <div class="callout"><p class="callout__title">Description coming shortly</p><p>The full description for ${esc(n.title)} is being added. In the meantime the book itself is on Amazon, and the <a href="/readers-line/">Readers' Line</a> carries new releases first.</p></div>
+        </div></section>`}
     <section class="section section--tight">
       <div class="wrap narrow card card--feature">
         <span class="eyebrow">Why this trope works on you</span>
@@ -1169,7 +1173,7 @@ async function buildNovels() {
 
     await emit(`/novels/${n.slug}/`, layout({
       title: `${n.title} — a novel by ${n.penName} | Knot Alone`,
-      description: `${n.hook} ${n.tropes.join(', ')}.`.slice(0, 300),
+      description: `${n.hook || `${n.title}, a romance novel by ${n.penName}.`} ${n.tropes.join(', ')}`.trim().slice(0, 300),
       path: `/novels/${n.slug}/`,
       body,
       type: 'book',
@@ -1184,10 +1188,10 @@ async function buildNovels() {
           publisher: { '@id': ORG_ID },
           genre: ['Romance', 'Contemporary romance'],
           inLanguage: 'en',
-          abstract: n.hook,
-          description: n.blurb.split('\n\n')[0],
+          ...(n.hook ? { abstract: n.hook } : {}),
+          ...(n.blurb ? { description: n.blurb.split('\n\n')[0] } : {}),
           contentRating: 'Adults only (18+)',
-          ...(buy ? { offers: { '@type': 'Offer', url: buy, availability: 'https://schema.org/InStock' } } : {}),
+          ...(buyK || buyP ? { offers: { '@type': 'Offer', url: buyK || buyP, availability: 'https://schema.org/InStock' } } : {}),
         },
       ],
     }), { priority: 0.7, changefreq: 'monthly' });
