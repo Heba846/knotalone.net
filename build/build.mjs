@@ -83,7 +83,9 @@ function freebieRow(f) {
     </div>
     ${ready
       ? `<a class="btn btn--sm" href="${f.file}" download>Download free</a>`
-      : `<a class="btn btn--ghost btn--sm" href="/free/${f.slug}/">Get notified</a>`}
+      : f.gumroad
+        ? `<a class="btn btn--sm" href="${f.gumroad}" target="_blank" rel="noopener">Get it free</a>`
+        : `<a class="btn btn--ghost btn--sm" href="/free/${f.slug}/">Get notified</a>`}
   </div>`;
 }
 
@@ -795,6 +797,12 @@ async function buildFree() {
         <p class="lede">The pages people actually keep: by the bed, in the planner, screenshotted at 2am. Print them, write on them, share them with whoever needs them.</p>
       </div>
       <div class="grid" style="gap:.8rem">${freebies.map(freebieRow).join('')}</div>
+      ${site.gumroadToolkit ? `<div class="card card--feature">
+        <span class="chip chip--accent">The whole set, one download</span>
+        <h3>Free Thoughtkind Toolkit</h3>
+        <p class="muted">Every free printable and template in one bundle — anxious attachment, overthinking and ADHD. The sheets above download instantly with no email; the bundle goes through Gumroad, which asks for an address so it can send you the file.</p>
+        <p><a class="btn btn--sm" href="${site.gumroadToolkit}" target="_blank" rel="noopener">Get the toolkit free ${icons.arrow}</a></p>
+      </div>` : ''}
       <div class="card card--feature">
         <h3>Printing tips</h3>
         <p class="muted">Every sheet works in black and white on plain A4 or US Letter. If you are printing for a class or a group, go ahead — just keep the footer on the page.</p>
@@ -843,10 +851,17 @@ async function buildFree() {
           <div class="row">
             ${f.file
               ? `<a class="btn" href="${f.file}" download>Download the PDF ${icons.arrow}</a>`
-              : `<a class="btn" href="/readers-line/">Email me when it's ready ${icons.arrow}</a>`}
+              : f.gumroad
+                ? `<a class="btn" href="${f.gumroad}" target="_blank" rel="noopener">Get it free on Gumroad ${icons.arrow}</a>`
+                : `<a class="btn" href="/readers-line/">Email me when it's ready ${icons.arrow}</a>`}
+            ${f.file && f.gumroad ? `<a class="btn btn--ghost" href="${f.gumroad}" target="_blank" rel="noopener">Longer version on Gumroad</a>` : ''}
             ${saveButton('free:' + f.slug, 'Save')}
           </div>
-          ${f.file ? '<p class="dim">No email needed. Print it, copy it, hand it to a friend.</p>' : '<p class="dim">This one is being finished right now — the Readers\' Line gets it first.</p>'}
+          ${f.file
+            ? '<p class="dim">No email needed. Print it, copy it, hand it to a friend.</p>'
+            : f.gumroad
+              ? '<p class="dim">Free on Gumroad — it asks for an email so the file can be sent to you.</p>'
+              : '<p class="dim">This one is being finished right now — the Readers\' Line gets it first.</p>'}
         </div>
         ${freeRelated(f)}
         <div class="card card--feature">

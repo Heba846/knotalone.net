@@ -95,7 +95,10 @@ export function baseGraph() {
       url: abs('/'),
       logo: { '@type': 'ImageObject', url: abs('/assets/logo.svg'), width: 512, height: 512 },
       description: site.description,
-      sameAs: Object.values(site.social).filter(Boolean).concat(site.youtube ? [site.youtube] : []),
+      sameAs: Object.values(site.social)
+        .filter(Boolean)
+        .concat(site.youtube ? [site.youtube] : [])
+        .concat(site.gumroad ? [site.gumroad] : []),
     },
     {
       '@type': 'WebSite',
@@ -310,6 +313,7 @@ ${body}
             <li><a href="/free/">Free printables</a></li>
             <li><a href="/games/">Mind games</a></li>
             <li><a href="/saved/">Your saved knots</a></li>
+            ${site.gumroad ? `<li><a href="${site.gumroad}" target="_blank" rel="noopener">Gumroad shop</a></li>` : ''}
           </ul>
         </div>
         <div>

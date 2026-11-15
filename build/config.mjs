@@ -23,7 +23,8 @@ export const site = {
 
   // Gumroad store, e.g. 'https://knotalone.gumroad.com' (public store URL,
   // NOT the gumroad.com/products dashboard, which needs a login).
-  gumroad: '',
+  gumroad: 'https://thoughtkindworkbook.gumroad.com',
+  gumroadToolkit: 'https://thoughtkindworkbook.gumroad.com/l/free-toolkit',
   social: {
     Instagram: 'https://instagram.com/knotalone.co',
     Pinterest: 'https://pinterest.com/knotaloneco',
