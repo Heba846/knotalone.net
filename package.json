@@ -1,0 +1,16 @@
+{
+  "name": "knotalone.net",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Knot Alone — Psychology, Simplified. Static site generator (zero runtime dependencies).",
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.mjs",
+    "dev": "node build/build.mjs && node build/serve.mjs",
+    "serve": "node build/serve.mjs",
+    "og": "node build/og.mjs",
+    "shoot": "node build/build.mjs && node build/shoot.mjs",
+    "check": "node build/check.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
