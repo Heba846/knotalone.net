@@ -767,25 +767,21 @@ async function buildWorkbooks() {
         breadcrumbGraph(trail),
         faqGraph(faqs, `/workbooks/${w.slug}/`),
         {
-          '@type': 'Product',
-          '@id': abs(`/workbooks/${w.slug}/`) + '#product',
+          // These are books sold on Amazon, not products sold here, so Book is
+          // the honest type. Product requires offers/review/aggregateRating and
+          // we have no price to state — an invalid Product earns a Search
+          // Console error and no rich result either way.
+          '@type': 'Book',
+          '@id': abs(`/workbooks/${w.slug}/`) + '#book',
           name: w.title,
+          alternativeHeadline: w.sub,
           description: `${w.sub}. ${w.promise}`,
           url: abs(`/workbooks/${w.slug}/`),
-          brand: { '@id': ORG_ID },
-          ...(w.author ? { author: { '@type': 'Person', name: w.author } } : {}),
-          category: 'Book',
-          ...(w.buy && w.price
-            ? {
-                offers: {
-                  '@type': 'Offer',
-                  url: w.buy,
-                  priceCurrency: 'USD',
-                  price: String(w.price).replace(/[^\d.]/g, ''),
-                  availability: 'https://schema.org/InStock',
-                },
-              }
-            : {}),
+          inLanguage: 'en',
+          publisher: { '@id': ORG_ID },
+          author: w.author ? { '@type': 'Person', name: w.author } : { '@id': ORG_ID },
+          ...(w.buy ? { sameAs: [w.buy] } : {}),
+          ...(t ? { about: { '@type': 'Thing', name: t.name } } : {}),
         },
       ],
     }), { priority: 0.8, changefreq: 'monthly' });
@@ -1239,7 +1235,7 @@ async function buildNovels() {
           ...(n.blurb ? { description: n.blurb.split('\n\n')[0] } : {}),
           ...(n.adult ? { contentRating: 'Adults only (18+)' } : {}),
           ...(n.closedDoor ? { abstract: n.hook, isFamilyFriendly: false } : {}),
-          ...(buyK || buyP ? { offers: { '@type': 'Offer', url: buyK || buyP, availability: 'https://schema.org/InStock' } } : {}),
+          ...(buyK || buyP ? { sameAs: [buyK, buyP].filter(Boolean) } : {}),
         },
       ],
     }), { priority: 0.7, changefreq: 'monthly' });
@@ -1371,7 +1367,7 @@ async function buildKids() {
           audience: { '@type': 'PeopleAudience', suggestedMinAge: Number(k.ages.split('–')[0]), suggestedMaxAge: Number(k.ages.split('–')[1]) },
           abstract: k.hook,
           description: k.blurb.split('\n\n')[0],
-          ...(k.buy ? { offers: { '@type': 'Offer', url: k.buy, availability: 'https://schema.org/InStock' } } : {}),
+          ...(k.buy ? { sameAs: [k.buy] } : {}),
         },
       ],
     }), { priority: 0.8, changefreq: 'monthly' });

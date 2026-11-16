@@ -86,12 +86,26 @@ for (const file of files) {
   for (const m of html.matchAll(/<img (?![^>]*alt=)[^>]*>/g)) warnings.push(`${rel} — img without alt: ${m[0].slice(0, 60)}`);
 }
 
-// JSON-LD validity
+// JSON-LD validity + the Product rule that cost us a Search Console error
 for (const file of files) {
   const html = fs.readFileSync(file, 'utf8');
   for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-    try { JSON.parse(m[1]); } catch (e) {
+    let data;
+    try { data = JSON.parse(m[1]); } catch (e) {
       problems.push(`${path.relative(DIST, file)} — invalid JSON-LD: ${e.message}`);
+      continue;
+    }
+    const nodes = Array.isArray(data['@graph']) ? data['@graph'] : [data];
+    for (const n of nodes) {
+      if (n && n['@type'] === 'Product' && !n.offers && !n.review && !n.aggregateRating) {
+        problems.push(
+          `${path.relative(DIST, file)} — Product schema without offers/review/aggregateRating ` +
+            `(Google rejects it; use Book or add a real offer)`
+        );
+      }
+      if (n && n.offers && n.offers.price === undefined && n.offers['@type'] === 'Offer') {
+        warnings.push(`${path.relative(DIST, file)} — Offer with no price`);
+      }
     }
   }
 }
