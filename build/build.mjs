@@ -697,7 +697,7 @@ async function buildWorkbooks() {
     <section class="section section--tight">
       <div class="wrap">
         <div class="book">
-          ${bookCover(w.title, 'Knot Alone', t?.tint)}
+          ${bookCover(w.title, w.author || 'Knot Alone', t?.tint, w.cover)}
           <div class="stack">
             <div class="row" style="gap:.4rem">
               <span class="chip chip--accent">${esc(t?.name || '')}</span>
@@ -762,7 +762,8 @@ async function buildWorkbooks() {
       description: `${w.hook} ${w.promise}`.slice(0, 300),
       path: `/workbooks/${w.slug}/`,
       body,
-      type: 'product',
+      type: 'book',
+      ...(w.cover ? { image: w.cover } : {}),
       graph: [
         breadcrumbGraph(trail),
         faqGraph(faqs, `/workbooks/${w.slug}/`),
@@ -780,6 +781,7 @@ async function buildWorkbooks() {
           inLanguage: 'en',
           publisher: { '@id': ORG_ID },
           author: w.author ? { '@type': 'Person', name: w.author } : { '@id': ORG_ID },
+          ...(w.cover ? { image: abs(w.cover) } : {}),
           ...(w.buy ? { sameAs: [w.buy] } : {}),
           ...(t ? { about: { '@type': 'Thing', name: t.name } } : {}),
         },

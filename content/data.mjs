@@ -56,6 +56,7 @@ export const topics = [
 export const workbooks = [
   {
     slug: 'i-blamed-the-brain',
+    cover: '/assets/covers/i-blamed-the-brain.jpg',
     title: 'I Blamed the Brain',
     sub: 'A Memoir of Late-Diagnosed ADHD and Masking — with the Workbook I Needed at Seven',
     topic: 'adhd',
