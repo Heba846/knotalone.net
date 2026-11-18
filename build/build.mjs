@@ -1811,7 +1811,7 @@ ${items}
 
 Educational psychology content for the general reader. Not therapy, diagnosis or medical advice.
 Publisher: Knot Alone (Thoughtkind Press). Reader-facing brand; practitioner material is published separately.
-Author: ${site.author.name} (pen name) — ${abs(AUTHOR_URL)}. MSc Psychology, University of Greenwich (London); diplomas in mental health; background in biotechnology; currently training at the Psychiatry & Addiction Clinic at Value Medical Clinic; diagnosed with ADHD at thirty; not a licensed clinician. Articles cite their sources.
+Author: ${site.author.name} (pen name) — ${abs(AUTHOR_URL)}. MSc Psychology, University of Greenwich (London); diplomas in mental health; background in biotechnology; currently training at a psychiatry & addiction clinic; diagnosed with ADHD at thirty; not a licensed clinician. Articles cite their sources.
 
 ## Core answers
 ${topics.map((t) => `- [${t.name}: ${t.question}](${abs(`/topics/${t.slug}/`)}) — ${t.answer}`).join('\n')}
