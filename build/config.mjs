@@ -62,7 +62,7 @@ export const site = {
       { name: 'MSc Psychology', category: 'degree', by: 'University of Greenwich' },
       { name: 'Diplomas in mental health', category: 'certificate' },
     ],
-    sameAs: [],
+    sameAs: ['https://www.amazon.com/author/erenajabrial'],
   },
   updated: '2026-11-18',
 };

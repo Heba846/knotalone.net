@@ -1672,6 +1672,7 @@ async function buildAuthor(articles) {
         ${A.bio.map((p) => `<p>${esc(p)}</p>`).join('')}
         ${books.length ? `<h2>Books</h2><ul>${books.map((w) => `<li><a href="/workbooks/${w.slug}/">${esc(w.title)}</a>, ${esc(w.sub)}${w.buy ? ` · <a href="${w.buy}" target="_blank" rel="noopener" data-track="amazon:author">Amazon</a>` : ''}</li>`).join('')}</ul>` : ''}
         ${novels.some((n) => n.penName === A.name) ? `<p>Novels: ${novels.filter((n) => n.penName === A.name).map((n) => `<a href="/novels/${n.slug}/">${esc(n.title)}</a>`).join(', ')}.</p>` : ''}
+        ${A.sameAs.length ? `<p>Find her books in one place: ${A.sameAs.map((u) => `<a href="${u}" target="_blank" rel="noopener me" data-track="amazon:author-page">${/amazon\./.test(u) ? 'Amazon author page' : esc(u)}</a>`).join(' · ')}.</p>` : ''}
         <h2>How the articles are written</h2>
         <ul>
           <li>One question per article, answered in the first paragraph.</li>
