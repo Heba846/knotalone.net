@@ -48,15 +48,15 @@ export const site = {
     slug: 'erena-jabrial',
     jobTitle: 'Writer, Knot Alone and Thoughtkind Press',
     short:
-      'Pen name of the writer behind Knot Alone. Master\'s in psychology, diplomas in mental health, studied at the University of Greenwich, London, with a background in biotechnology. Diagnosed with ADHD at thirty; author of the memoir I Blamed the Brain. Not a licensed therapist: every article is educational and cites its research.',
+      'Pen name of the writer behind Knot Alone. Master\'s in psychology, diplomas in mental health, studied at the University of Greenwich, London, with a background in biotechnology. Currently training at a mental health and addiction treatment centre. Diagnosed with ADHD at thirty; author of the memoir I Blamed the Brain. Not a licensed therapist: every article is educational and cites its research.',
     bio: [
       'Erena Jabrial is the pen name of the writer behind Knot Alone and the Thoughtkind Press workbooks.',
-      'She holds a master\'s degree in psychology and diplomas in mental health, studied at the University of Greenwich in London, and comes from a background in biotechnology, which is where the habit of reading the study behind the headline comes from. Every article on this site is built on published research, lists its sources, and says plainly where the evidence is thin or contested.',
+      'She holds a master\'s degree in psychology and diplomas in mental health, studied at the University of Greenwich in London, and comes from a background in biotechnology, which is where the habit of reading the study behind the headline comes from. She is currently training at a mental health and addiction treatment centre. Every article on this site is built on published research, lists its sources, and says plainly where the evidence is thin or contested.',
       'She was diagnosed with ADHD at thirty. That story, and the workbook she needed as a child, became her memoir, I Blamed the Brain.',
       'She is not a licensed therapist or clinician, and nothing here is diagnosis or treatment. The point is to explain the mechanism in plain language, so the person living it can stop treating it as a character flaw.',
       'Under the same name she also writes closed-door romance, the novels on this site.',
     ],
-    knowsAbout: ['ADHD', 'Attachment theory', 'Overthinking and rumination', 'Breakup recovery', 'Emotion regulation', 'Procrastination'],
+    knowsAbout: ['ADHD', 'Attachment theory', 'Overthinking and rumination', 'Breakup recovery', 'Emotion regulation', 'Procrastination', 'Addiction recovery'],
     alumniOf: [{ name: 'University of Greenwich', url: 'https://www.gre.ac.uk/' }],
     credentials: [
       { name: "Master's degree in psychology", category: 'degree' },
