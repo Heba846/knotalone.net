@@ -84,6 +84,9 @@ function metaBlock({ title, description, path, image, type = 'website', publishe
 /* ---------------- structured data ---------------- */
 export const ORG_ID = abs('/#organization');
 export const SITE_ID = abs('/#website');
+export const AUTHOR_URL = `/author/${site.author.slug}/`;
+export const PERSON_ID = abs(AUTHOR_URL) + '#person';
+export const authorRef = () => ({ '@type': 'Person', '@id': PERSON_ID, name: site.author.name, url: abs(AUTHOR_URL) });
 
 export function baseGraph() {
   return [
@@ -99,6 +102,18 @@ export function baseGraph() {
         .filter(Boolean)
         .concat(site.youtube ? [site.youtube] : [])
         .concat(site.gumroad ? [site.gumroad] : []),
+      founder: { '@id': PERSON_ID },
+    },
+    {
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: site.author.name,
+      url: abs(AUTHOR_URL),
+      jobTitle: site.author.jobTitle,
+      description: site.author.short,
+      knowsAbout: site.author.knowsAbout,
+      worksFor: { '@id': ORG_ID },
+      ...(site.author.sameAs.length ? { sameAs: site.author.sameAs } : {}),
     },
     {
       '@type': 'WebSite',

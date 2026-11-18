@@ -35,5 +35,29 @@ export const site = {
     Pinterest: 'https://pinterest.com/knotaloneco',
     Facebook: 'https://facebook.com/profile.php?id=61596298298973',
   },
-  updated: '2026-11-14',
+  // Amazon Associates tracking id, e.g. 'knotalone-20'. Set = every Amazon
+  // link carries it (clicks + orders show in the Associates report) and the
+  // affiliate disclosure appears. Empty = plain links, no disclosure.
+  amazonTag: '',
+
+  // The person behind the byline. A pen name is fine for E-E-A-T as long as
+  // the background is real and stated plainly — never add a credential here
+  // that is not true.
+  author: {
+    name: 'Erena Jabrial',
+    slug: 'erena-jabrial',
+    jobTitle: 'Writer, Knot Alone and Thoughtkind Press',
+    short:
+      'Pen name of the writer behind Knot Alone. Background in biotechnology, diagnosed with ADHD at thirty, author of the memoir I Blamed the Brain. Not a therapist: every article is educational and cites its research.',
+    bio: [
+      'Erena Jabrial is the pen name of the writer behind Knot Alone and the Thoughtkind Press workbooks.',
+      'She comes from a background in biotechnology, which is where the habit of reading the study behind the headline comes from. Every article on this site is built on published research, lists its sources, and says plainly where the evidence is thin or contested.',
+      'She was diagnosed with ADHD at thirty. That story, and the workbook she needed as a child, became her memoir, I Blamed the Brain.',
+      'She is not a therapist or a clinician, and nothing here is diagnosis or treatment. The point is to explain the mechanism in plain language, so the person living it can stop treating it as a character flaw.',
+      'Under the same name she also writes closed-door romance, the novels on this site.',
+    ],
+    knowsAbout: ['ADHD', 'Attachment theory', 'Overthinking and rumination', 'Breakup recovery', 'Emotion regulation', 'Procrastination'],
+    sameAs: [],
+  },
+  updated: '2026-11-18',
 };

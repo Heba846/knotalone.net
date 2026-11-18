@@ -547,3 +547,16 @@ details.qa .qa__body > * + * { margin-top: .7rem; }
 .sources ol { padding-left: 1.2rem; display: grid; gap: .4rem; opacity: .85; }
 .sources a { overflow-wrap: anywhere; }
 .card--feature { outline: 2px solid color-mix(in oklab, var(--calm) 45%, transparent); }
+
+/* author box */
+.author-box { margin-top: 2rem; padding: 1.1rem 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-soft); }
+.author-box p { margin: .25rem 0 0; }
+.author-box .muted { font-size: .93rem; }
+
+/* /start/ link-in-bio */
+.start { max-width: 520px; margin-inline: auto; display: grid; gap: 1.6rem; }
+.start__list { display: grid; gap: .7rem; }
+.start__btn { display: grid; gap: .15rem; padding: .95rem 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-soft); text-decoration: none; color: inherit; }
+.start__btn span { font-size: .88rem; opacity: .75; }
+.start__btn:hover, .start__btn:focus-visible { border-color: var(--calm); }
+.start__btn--primary { border: 2px solid var(--calm); }

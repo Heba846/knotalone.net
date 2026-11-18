@@ -5,9 +5,18 @@ import { site } from './config.mjs';
 import { parseFrontmatter, renderMarkdown, stripHtml, readingTime } from './markdown.mjs';
 import {
   layout, abs, icons, breadcrumbs, faqSection, saveButton, newsletterCard,
-  breadcrumbGraph, faqGraph, ORG_ID, SITE_ID,
+  breadcrumbGraph, faqGraph, ORG_ID, SITE_ID, AUTHOR_URL, PERSON_ID, authorRef,
 } from './templates.mjs';
 import { topics, workbooks, freebies, games, novels, kidsBooks, homeFaqs } from '../content/data.mjs';
+
+/* Amazon Associates: one switch in config tags every Amazon link and turns
+   the disclosure on. Without a tag the site makes no affiliate claim. */
+const AMZ = !!site.amazonTag;
+const tagAmazon = (u) => (AMZ && u && /amazon\./.test(u) && !/[?&]tag=/.test(u) ? `${u}${u.includes('?') ? '&' : '?'}tag=${site.amazonTag}` : u);
+for (const list of [workbooks, novels, kidsBooks]) {
+  for (const item of list) for (const k of ['buy', 'buyKindle', 'buyPaperback']) if (item[k]) item[k] = tagAmazon(item[k]);
+}
+const byAuthor = (name) => (name === site.author.name ? authorRef() : { '@type': 'Person', name });
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUT = path.join(ROOT, 'dist');
@@ -465,6 +474,14 @@ function parseSources(data) {
   return out;
 }
 
+function authorBox() {
+  return `<aside class="author-box">
+    <span class="eyebrow">Written by</span>
+    <p><a href="${AUTHOR_URL}"><strong>${esc(site.author.name)}</strong></a></p>
+    <p class="muted">${esc(site.author.short)}</p>
+  </aside>`;
+}
+
 function sourcesBlock(list) {
   if (!list.length) return '';
   return `<section class="sources" aria-labelledby="sources-h">
@@ -542,7 +559,7 @@ async function buildArticles(articles) {
           <h1>${esc(a.title)}</h1>
           <p class="lede">${esc(a.summary)}</p>
           <div class="row dim" style="gap:.8rem">
-            <span>${a.readingTime} min read</span><span>·</span><span>Updated ${esc(a.dateLabel)}</span>
+            <span>By <a href="${AUTHOR_URL}">${esc(site.author.name)}</a></span><span>·</span><span>${a.readingTime} min read</span><span>·</span><span>Updated ${esc(a.dateLabel)}</span>
             ${saveButton('article:' + a.slug, 'Save')}
           </div>
         </header>
@@ -553,6 +570,7 @@ async function buildArticles(articles) {
             ${a.video ? '<p class="video__note">Nothing loads from YouTube until you press play.</p>' : ''}
             ${a.html}
             ${sourcesBlock(a.sources)}
+            ${authorBox()}
             <hr>
             <p class="dim">Knot Alone is educational and does not diagnose or treat anything. If you are in crisis, contact local emergency services or a crisis line in your country.</p>
           </div>
@@ -598,7 +616,7 @@ async function buildArticles(articles) {
           wordCount: stripHtml(a.html).split(' ').length,
           timeRequired: `PT${a.readingTime}M`,
           about: a.tags.map((t) => ({ '@type': 'Thing', name: topicOf(t)?.name || t })),
-          author: { '@type': 'Organization', '@id': ORG_ID, name: site.name },
+          author: authorRef(),
           publisher: { '@id': ORG_ID },
           image: abs('/assets/og-default.png'),
           ...(a.sources.length ? { citation: a.sources.map((x) => ({ '@type': 'CreativeWork', name: x.text, ...(x.url ? { url: x.url } : {}) })) } : {}),
@@ -746,7 +764,7 @@ async function buildWorkbooks() {
               ${saveButton('workbook:' + w.slug, 'Save')}
             </div>
             ${w.kindleNote ? `<p class="dim">${esc(w.kindleNote)}</p>` : ''}
-            <p class="dim">Amazon link — as an Amazon Associate we may earn from qualifying purchases. Educational, not therapy.</p>
+            <p class="dim">${AMZ ? 'Amazon link — as an Amazon Associate we may earn from qualifying purchases. ' : ''}Educational, not therapy.</p>
           </div>
         </div>
       </div>
@@ -810,7 +828,7 @@ async function buildWorkbooks() {
           url: abs(`/workbooks/${w.slug}/`),
           inLanguage: 'en',
           publisher: { '@id': ORG_ID },
-          author: w.author ? { '@type': 'Person', name: w.author } : { '@id': ORG_ID },
+          author: w.author ? byAuthor(w.author) : { '@id': ORG_ID },
           ...(w.cover ? { image: abs(w.cover) } : {}),
           ...(w.buy ? { sameAs: [w.buy] } : {}),
           ...(t ? { about: { '@type': 'Thing', name: t.name } } : {}),
@@ -1220,7 +1238,7 @@ async function buildNovels() {
               ${saveButton('novel:' + n.slug, 'Save')}
             </div>
             ${n.paperbackNote ? `<p class="dim">${esc(n.paperbackNote)}</p>` : ''}
-            ${buyK || buyP ? '<p class="dim">Amazon links. As an Amazon Associate we may earn from qualifying purchases.</p>' : ''}
+            ${AMZ && (buyK || buyP) ? '<p class="dim">Amazon links. As an Amazon Associate we may earn from qualifying purchases.</p>' : ''}
           </div>
         </div>
       </div>
@@ -1258,7 +1276,7 @@ async function buildNovels() {
           '@id': abs(`/novels/${n.slug}/`) + '#book',
           name: n.title,
           url: abs(`/novels/${n.slug}/`),
-          author: { '@type': 'Person', name: n.penName },
+          author: byAuthor(n.penName),
           publisher: { '@id': ORG_ID },
           genre: ['Romance', 'Contemporary romance'],
           inLanguage: 'en',
@@ -1488,7 +1506,8 @@ async function buildStatic(articles) {
           <li>Invent a statistic to make a point land harder.</li>
         </ul>
         <h2>Who writes it</h2>
-        <p>Knot Alone is written and made by the team behind Thoughtkind Press. The practitioner-facing material — facilitator guides and session-ready workbooks — lives on the Thoughtkind side; Knot Alone is the reader's side, written in plain language for the person in it. The novels are published under the pen name Erena Jabrial.</p>
+        <p>Knot Alone is written by <a href="${AUTHOR_URL}">${esc(site.author.name)}</a>, the pen name of the writer behind Thoughtkind Press. ${esc(site.author.short)}</p>
+        <p>The practitioner-facing material (facilitator guides and session-ready workbooks) lives on the Thoughtkind side. Knot Alone is the reader's side, written in plain language for the person in it.</p>
         <h2>Where to start</h2>
         <p>If you want one thing: <a href="/games/whats-knotting-you/">find your knot</a>. Six questions, two minutes, and it will point you at the article, tool or workbook most likely to help tonight — including the free one, when that is the honest answer.</p>
       </div>
@@ -1574,7 +1593,7 @@ async function buildStatic(articles) {
       <h2>Analytics</h2>
       <p>We use privacy-respecting, aggregate analytics to see which pages help, with no cross-site tracking and no advertising profiles built from your visit.</p>
       <h2>Affiliate links</h2>
-      <p>Some book links go to Amazon as an Amazon Associate, which means a qualifying purchase may earn us a small commission at no extra cost to you. It never changes what we recommend, and affiliate links are marked on the page.</p>
+      <p>${AMZ ? 'Some book links go to Amazon as an Amazon Associate, which means a qualifying purchase may earn us a small commission at no extra cost to you. It never changes what we recommend, and affiliate links are marked on the page.' : 'Book links go to Amazon, where our own books are sold. They are not affiliate links. If that ever changes, it will be stated here and on the page.'}</p>
       <h2>Children</h2>
       <p>The kids books are written for children but this site is written for the adults buying and reading them. We do not knowingly collect information from children.</p>
       <h2>Contact</h2>
@@ -1602,7 +1621,7 @@ async function buildStatic(articles) {
       <h2>Paid workbooks and books</h2>
       <p>A purchase is for your personal use (or your own classroom or practice). Bulk and institutional use is welcome — ask us and we will sort it out.</p>
       <h2>Affiliate disclosure</h2>
-      <p>As an Amazon Associate we may earn from qualifying purchases made through book links on this site.</p>
+      ${AMZ ? '<p>As an Amazon Associate we may earn from qualifying purchases made through book links on this site.</p>' : ''}
       <h2>Changes</h2>
       <p>If these terms change in a way that matters, the date above changes with them.</p>
     </div></section>`,
@@ -1633,6 +1652,80 @@ async function buildStatic(articles) {
 }
 
 /* ============================ feeds & machine files ============================ */
+
+/* ============================ author ============================ */
+
+async function buildAuthor(articles) {
+  const A = site.author;
+  const books = workbooks.filter((w) => w.author === A.name);
+  const trail = [{ href: '/', label: 'Home' }, { href: '/about/', label: 'About' }, { href: AUTHOR_URL, label: A.name }];
+  await emit(AUTHOR_URL, layout({
+    title: `${A.name} — writer of Knot Alone`,
+    description: A.short,
+    path: AUTHOR_URL,
+    body: `
+    ${breadcrumbs(trail)}
+    <section class="section section--tight">
+      <div class="wrap narrow prose">
+        <span class="eyebrow">Author</span>
+        <h1>${esc(A.name)}</h1>
+        ${A.bio.map((p) => `<p>${esc(p)}</p>`).join('')}
+        ${books.length ? `<h2>Books</h2><ul>${books.map((w) => `<li><a href="/workbooks/${w.slug}/">${esc(w.title)}</a>, ${esc(w.sub)}${w.buy ? ` · <a href="${w.buy}" target="_blank" rel="noopener" data-track="amazon:author">Amazon</a>` : ''}</li>`).join('')}</ul>` : ''}
+        ${novels.some((n) => n.penName === A.name) ? `<p>Novels: ${novels.filter((n) => n.penName === A.name).map((n) => `<a href="/novels/${n.slug}/">${esc(n.title)}</a>`).join(', ')}.</p>` : ''}
+        <h2>How the articles are written</h2>
+        <ul>
+          <li>One question per article, answered in the first paragraph.</li>
+          <li>Built on published research, with sources listed under the article.</li>
+          <li>Where the evidence is thin or contested, the article says so.</li>
+          <li>No invented statistics, no diagnosing, no shaming.</li>
+        </ul>
+        <h2>Articles</h2>
+        <ul>${articles.map((a) => `<li><a href="${a.url}">${esc(a.title)}</a></li>`).join('')}</ul>
+      </div>
+    </section>`,
+    graph: [
+      breadcrumbGraph(trail),
+      { '@type': 'ProfilePage', '@id': abs(AUTHOR_URL) + '#page', url: abs(AUTHOR_URL), name: A.name, isPartOf: { '@id': SITE_ID }, mainEntity: { '@id': PERSON_ID } },
+    ],
+  }), { priority: 0.6, changefreq: 'monthly' });
+}
+
+/* ============================ /start/ ============================
+   The Instagram / Pinterest / YouTube bio link. Lives on the domain so
+   every visit lands in GA4 and one tap reaches a book or the free kit.  */
+
+async function buildStart(articles) {
+  const latest = articles.find((a) => a.video) || articles[0];
+  const btn = (href, label, sub, { primary = false, out = false, track = '' } = {}) => `
+    <a class="start__btn${primary ? ' start__btn--primary' : ''}" href="${href}"${out ? ' target="_blank" rel="noopener"' : ''}${track ? ` data-track="${track}"` : ''}>
+      <strong>${esc(label)}</strong>${sub ? `<span>${esc(sub)}</span>` : ''}
+    </a>`;
+  const body = `
+  <section class="section section--tight">
+    <div class="wrap start">
+      <div class="stack" style="text-align:center">
+        <span class="eyebrow">Knot Alone</span>
+        <h1>Start here</h1>
+        <p class="muted">Psychology, simplified. Pick the one that fits tonight.</p>
+      </div>
+      <div class="start__list">
+        ${btn(latest.url, `New: ${latest.title}`, latest.video ? 'The article behind the video' : 'Latest article', { primary: true, track: 'start:latest' })}
+        ${btn('/games/whats-knotting-you/', 'Find your knot', '6 questions, 2 minutes', { track: 'start:quiz' })}
+        ${btn('/free/', 'Free printables', 'No email wall. Print tonight.', { track: 'start:free' })}
+        ${workbooks.filter((w) => w.buy).map((w) => btn(w.buy, w.title, `${w.sub} · Amazon`, { out: true, track: 'amazon:start' })).join('')}
+        ${site.youtube ? btn(site.youtube, 'Watch on YouTube', 'New videos every week', { out: true, track: 'start:youtube' }) : ''}
+        ${btn('/readers-line/', "The Readers' Line", 'One explanation a week, by email', { track: 'start:email' })}
+      </div>
+    </div>
+  </section>`;
+  await emit('/start/', layout({
+    title: 'Start here | Knot Alone',
+    description: 'The quickest way into Knot Alone: the newest article, the 2-minute quiz, free printables and the books.',
+    path: '/start/',
+    body,
+    noindex: true,
+  }), { index: false });
+}
 
 async function buildFeeds(articles) {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1718,6 +1811,7 @@ ${items}
 
 Educational psychology content for the general reader. Not therapy, diagnosis or medical advice.
 Publisher: Knot Alone (Thoughtkind Press). Reader-facing brand; practitioner material is published separately.
+Author: ${site.author.name} (pen name) — ${abs(AUTHOR_URL)}. Background in biotechnology; diagnosed with ADHD at thirty; not a clinician. Articles cite their sources.
 
 ## Core answers
 ${topics.map((t) => `- [${t.name}: ${t.question}](${abs(`/topics/${t.slug}/`)}) — ${t.answer}`).join('\n')}
@@ -1803,6 +1897,8 @@ async function main() {
   await buildNovels();
   await buildKids();
   await buildStatic(articles);
+  await buildAuthor(articles);
+  await buildStart(articles);
   await buildFeeds(articles);
   console.log(`✶ built ${pages.length} indexed pages + feeds → dist/`);
 }
