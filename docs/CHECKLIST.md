@@ -45,7 +45,7 @@ can be handed back to Claude.
 ### Day 4 — Products & links
 - [ ] ⛔ Send Claude your **Gumroad username/links** for the free products → they get wired in
       as real download buttons (same as the 7 PDFs now live)
-- [ ] ⛔ Amazon / GoodNovel links for **Marry to Don** and **Left at the Altar**
+- [x] ~~Amazon links for the novels~~ — done (both are live on Amazon)
 - [ ] ⛔ Buy link for **My Brain Has Its Own Speed**
 - [ ] ⛔ Prices for the 5 workbooks (empty price = no `Product` offer schema, which costs you rich results)
 
@@ -118,7 +118,7 @@ Pick from the gap list (these have search demand and no page yet):
 |---|---|---|
 | Live domain + HTTPS | DNS at registrar | ⛔ you |
 | Search Console verified | your Google account | ⛔ you |
-| Amazon / GoodNovel links | the books being listed | ⛔ you |
+| Amazon links | the books being listed | ⛔ you |
 | Gumroad freebies on site | your Gumroad links | ⛔ you → then Claude |
 | Newsletter provider | your choice of provider | ⛔ you → then Claude |
 | YouTube in footer + schema | channel URL | ⛔ you → then Claude |

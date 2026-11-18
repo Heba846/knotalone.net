@@ -6,6 +6,10 @@ updated: 2026-11-14
 summary: The restlessness, the checking, the 3am craving for one specific person — that is not weakness and it is not even grief, exactly. Two different pains are running at the same time, and they need two different responses.
 answer: A breakup hurts physically because the reward system that learned to track one specific person is still firing while the reward has stopped arriving. That is withdrawal, and it runs alongside grief — which is why it feels like craving rather than only sadness.
 tags: [breakups, healing]
+source1: Fisher, H. E., Brown, L. L., Aron, A., Strong, G. & Mashek, D. (2010). Reward, addiction, and emotion regulation systems associated with rejection in love. Journal of Neurophysiology, 104(1), 51–60. | https://doi.org/10.1152/jn.00784.2009
+videoDate: 2026-11-17
+videoTitle: Why Breakups Hurt Like Withdrawal
+video: aE_sn3iZn9w
 faq1_q: Why does a breakup feel physically painful?
 faq1_a: Because romantic attachment runs partly on the same reward and motivation circuitry involved in wanting and seeking — and brain-imaging studies of recently rejected people show activity in regions tied to craving and to physical pain processing. Your body is not being dramatic. It is responding to the loss of something it had been treating as a resource.
 faq2_q: How long does breakup withdrawal last?

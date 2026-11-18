@@ -479,3 +479,29 @@
     })
   );
 })();
+
+/* ---- conversion tracking ----------------------------------------------
+   Every click that leaves for Amazon, YouTube, Pinterest, Instagram or the
+   Gumroad store becomes a named GA4 event, so "which page sold the book"
+   is a report, not a guess. Mark them as key events in GA4 once. */
+(() => {
+  const kinds = [
+    [/amazon\.|amzn\./, 'amazon_click'],
+    [/youtube\.com|youtu\.be/, 'youtube_click'],
+    [/pinterest\./, 'pinterest_click'],
+    [/instagram\.com/, 'instagram_click'],
+    [/gumroad\.com/, 'gumroad_click'],
+  ];
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a[href^="http"]');
+    if (!a || typeof window.gtag !== 'function') return;
+    const hit = kinds.find(([re]) => re.test(a.hostname));
+    if (!hit) return;
+    window.gtag('event', hit[1], {
+      link_url: a.href,
+      page_path: location.pathname,
+      placement: a.dataset.track || a.closest('[class]')?.className.split(' ')[0] || '',
+      transport_type: 'beacon',
+    });
+  }, { capture: true });
+})();

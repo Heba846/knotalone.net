@@ -155,18 +155,21 @@ function nextSteps(a) {
   const game = games.find((g) => g.topic === t.slug) || games[0];
   const sheet = freebies.find((f) => f.topic === t.slug) || freebies[0];
   const book = workbooks.find((w) => w.topic === t.slug);
+  // Order is the conversion order: the book first (it is the only thing that
+  // earns), then the free printable (the email capture), then the game.
   const cards = [
-    game && {
-      kind: 'Play it', title: game.title, desc: game.tagline,
-      href: `/games/${game.slug}/`, cta: `${game.minutes} min, free`,
+    book && {
+      kind: 'Work through it', title: book.title, desc: book.sub,
+      href: `/workbooks/${book.slug}/`, cta: `${book.pages} pages`,
+      buy: book.buy, feature: true,
     },
     sheet && {
       kind: 'Print it', title: sheet.title, desc: sheet.desc,
       href: `/free/${sheet.slug}/`, cta: sheet.file ? 'Free PDF' : 'Coming soon',
     },
-    book && {
-      kind: 'Work through it', title: book.title, desc: book.sub,
-      href: `/workbooks/${book.slug}/`, cta: `${book.pages} pages`,
+    game && {
+      kind: 'Play it', title: game.title, desc: game.tagline,
+      href: `/games/${game.slug}/`, cta: `${game.minutes} min, free`,
     },
   ].filter(Boolean);
 
@@ -176,14 +179,16 @@ function nextSteps(a) {
       <div class="stack" style="max-width:48ch">
         <span class="eyebrow">Don't just read it</span>
         <h2>What to do with this tonight</h2>
-        <p class="muted">Understanding changes very little on its own. These three take between two minutes and a week, and they all work on the same mechanism this article describes.</p>
+        <p class="muted">Understanding changes very little on its own. These take between two minutes and a week, and they all work on the same mechanism this article describes.</p>
       </div>
       <div class="grid grid--3">
-        ${cards.map((c) => `<article class="card">
+        ${cards.map((c) => `<article class="card${c.feature ? ' card--feature' : ''}">
           <span class="chip chip--calm">${esc(c.kind)}</span>
           <h3><a href="${c.href}">${esc(c.title)}</a></h3>
           <p class="muted" style="font-size:.95rem">${esc(c.desc)}</p>
-          <div class="card__meta"><span>${esc(c.cta)}</span></div>
+          ${c.buy
+            ? `<p class="row" style="gap:.5rem"><a class="btn btn--sm" href="${c.buy}" target="_blank" rel="noopener" data-track="amazon:${esc(a.slug)}">Get it on Amazon ${icons.arrow}</a><a class="btn btn--ghost btn--sm" href="${c.href}">Look inside</a></p>`
+            : `<div class="card__meta"><span>${esc(c.cta)}</span></div>`}
         </article>`).join('')}
       </div>
       <p><a class="btn btn--ghost btn--sm" href="/topics/${t.slug}/">Everything on ${esc(t.name.toLowerCase())} ${icons.arrow}</a></p>
@@ -430,6 +435,7 @@ async function loadArticles() {
       toc,
       tags: Array.isArray(data.tags) ? data.tags : (data.tags || '').split(/\s+/).filter(Boolean),
       faqs: parseFaqs(data),
+      sources: parseSources(data),
       readingTime: readingTime(html),
       dateLabel: new Date(data.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
     });
@@ -443,6 +449,28 @@ function parseFaqs(data) {
     if (data[`faq${i}_q`]) out.push({ q: data[`faq${i}_q`], a: `<p>${data[`faq${i}_a`]}</p>` });
   }
   return out;
+}
+
+/* source1 … source8: "Author (Year). Title. Journal. | https://doi.org/…"
+   Renders a Sources list under the article and a `citation` in the
+   Article schema — the trust signal Google weighs on mental-health pages. */
+function parseSources(data) {
+  const out = [];
+  for (let i = 1; i <= 8; i++) {
+    const raw = data[`source${i}`];
+    if (!raw) continue;
+    const [text, url] = raw.split(' | ').map((x) => x.trim());
+    out.push({ text, url: url || '' });
+  }
+  return out;
+}
+
+function sourcesBlock(list) {
+  if (!list.length) return '';
+  return `<section class="sources" aria-labelledby="sources-h">
+    <h2 id="sources-h">Sources</h2>
+    <ol>${list.map((x) => `<li>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.text)}</a>` : esc(x.text)}</li>`).join('')}</ol>
+  </section>`;
 }
 
 async function buildArticles(articles) {
@@ -524,6 +552,7 @@ async function buildArticles(articles) {
             ${videoEmbed(a)}
             ${a.video ? '<p class="video__note">Nothing loads from YouTube until you press play.</p>' : ''}
             ${a.html}
+            ${sourcesBlock(a.sources)}
             <hr>
             <p class="dim">Knot Alone is educational and does not diagnose or treat anything. If you are in crisis, contact local emergency services or a crisis line in your country.</p>
           </div>
@@ -572,6 +601,7 @@ async function buildArticles(articles) {
           author: { '@type': 'Organization', '@id': ORG_ID, name: site.name },
           publisher: { '@id': ORG_ID },
           image: abs('/assets/og-default.png'),
+          ...(a.sources.length ? { citation: a.sources.map((x) => ({ '@type': 'CreativeWork', name: x.text, ...(x.url ? { url: x.url } : {}) })) } : {}),
         },
       ],
     }), { priority: 0.8, changefreq: 'monthly', lastmod: a.updated || a.date });

@@ -6,6 +6,10 @@ updated: 2026-11-14
 summary: The replay loop is not deep thinking and it is not a character flaw. It is an unfinished task your brain refuses to file — and it has an off switch that is nothing like "stop thinking about it".
 answer: Your brain replays conversations because it treats an unresolved social moment like an unfinished task — and unfinished tasks keep a claim on your attention until they are closed, written down, or given an ending.
 tags: [overthinking, healing]
+source1: Nolen-Hoeksema, S., Wisco, B. E. & Lyubomirsky, S. (2008). Rethinking rumination. Perspectives on Psychological Science, 3(5), 400–424. | https://doi.org/10.1111/j.1745-6924.2008.00088.x
+videoDate: 2026-11-16
+videoTitle: Psychology of People Who Replay Conversations
+video: XyqLGSPH-64
 faq1_q: Why does overthinking get worse at night?
 faq1_a: Because the distractions are gone and the loop no longer has competition. During the day, work, noise and other people keep interrupting the replay. In bed there is nothing else for attention to do, so the loop gets the whole stage — which is why it feels like it arrived at night, when really it was waiting all day.
 faq2_q: Is replaying conversations a sign of anxiety?

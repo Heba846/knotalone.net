@@ -6,6 +6,7 @@ updated: 2026-11-15
 summary: Nine people said it was good. One said it was fine. Guess which sentence you are still carrying at midnight. There is a mechanism for this, and knowing it changes what you do with the sentence.
 answer: Negative information gets more attention, more processing and stronger memory than positive information of the same size — a well-documented asymmetry often called negativity bias. One criticism outweighs ten compliments because your brain files threats carefully and praise casually.
 tags: [overthinking, healing]
+source1: Baumeister, R. F., Bratslavsky, E., Finkenauer, C. & Vohs, K. D. (2001). Bad is stronger than good. Review of General Psychology, 5(4), 323–370. | https://doi.org/10.1037/1089-2680.5.4.323
 faq1_q: What is negativity bias?
 faq1_a: The tendency for negative events and information to affect you more strongly than equally intense positive ones. It shows up in attention, memory, learning and decision-making, and it is one of the most consistently replicated findings in psychology. It is a feature of normal brains, not a sign of pessimism.
 faq2_q: Why do I remember criticism word for word?

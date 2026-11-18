@@ -6,6 +6,7 @@ updated: 2026-11-16
 summary: The problem did not change between 4pm and 1am. Your ability to think about it did. Three separate systems are working against you at night, and none of them is your personality.
 answer: Problems feel worse at night because tiredness weakens the brain regions that regulate emotion while leaving the threat system fully awake, your body clock is at a low point, and there is nothing left competing for your attention. The thought is the same size — your capacity to hold it has shrunk.
 tags: [overthinking, healing]
+source1: Yoo, S.-S., Gujar, N., Hu, P., Jolesz, F. A. & Walker, M. P. (2007). The human emotional brain without sleep — a prefrontal amygdala disconnect. Current Biology, 17(20), R877–R878. | https://doi.org/10.1016/j.cub.2007.08.007
 faq1_q: Why do my problems feel worse at night?
 faq1_a: Three things stack up at once. Sleep pressure weakens the prefrontal regions that keep emotional reactions in proportion, your circadian rhythm puts mood and alertness at a low point in the early hours, and the distractions that competed with the thought all day are gone. Same problem, much less capacity.
 faq2_q: Is it true that you shouldn't make decisions at night?

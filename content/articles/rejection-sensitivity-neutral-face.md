@@ -6,6 +6,10 @@ updated: 2026-11-17
 summary: They said "fine" and your whole day reorganised around it. Rejection sensitivity is not insecurity and it is not vanity — it is a threat system set to maximum on one specific channel.
 answer: Rejection sensitivity is heightened alertness to signs of disapproval, so ambiguous cues — a flat tone, a short reply, a neutral face — get read as rejection and produce a physical, disproportionate reaction. It is common in ADHD and in anyone whose early environment made approval unpredictable.
 tags: [adhd, attachment]
+source1: Downey, G. & Feldman, S. I. (1996). Implications of rejection sensitivity for intimate relationships. Journal of Personality and Social Psychology, 70(6), 1327–1343. | https://doi.org/10.1037/0022-3514.70.6.1327
+videoDate: 2026-11-14
+videoTitle: Why "ok." Ruins Your Whole Night
+video: f3CIZpMQRsQ
 faq1_q: What is rejection sensitive dysphoria?
 faq1_a: An informal term for the intense, sudden emotional pain that follows real or perceived rejection, widely reported by people with ADHD. It is not a formal diagnosis and does not appear in the diagnostic manuals, but the experience it describes — a disproportionate, physical reaction to disapproval — is real and consistently described.
 faq2_q: Why do I overreact to small criticism?
