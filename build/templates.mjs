@@ -113,7 +113,7 @@ export function baseGraph() {
       description: site.author.short,
       knowsAbout: site.author.knowsAbout,
       ...(site.author.alumniOf?.length ? { alumniOf: site.author.alumniOf.map((u) => ({ '@type': 'CollegeOrUniversity', name: u.name, ...(u.url ? { sameAs: u.url } : {}) })) } : {}),
-      ...(site.author.credentials?.length ? { hasCredential: site.author.credentials.map((c) => ({ '@type': 'EducationalOccupationalCredential', name: c.name, credentialCategory: c.category })) } : {}),
+      ...(site.author.credentials?.length ? { hasCredential: site.author.credentials.map((c) => ({ '@type': 'EducationalOccupationalCredential', name: c.name, credentialCategory: c.category, ...(c.by ? { recognizedBy: { '@type': 'CollegeOrUniversity', name: c.by } } : {}) })) } : {}),
       worksFor: { '@id': ORG_ID },
       ...(site.author.sameAs.length ? { sameAs: site.author.sameAs } : {}),
     },
